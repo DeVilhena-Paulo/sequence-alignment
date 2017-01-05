@@ -47,7 +47,6 @@ public class Subsequence {
                 }
             }
         }
-
         return path;
     }
 
