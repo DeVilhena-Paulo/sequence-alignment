@@ -197,6 +197,20 @@ public class Alignment {
             }
         }
 
+        if (i == 0)
+            while (j > 0) {
+                tEdition.append(t.charAt(j-1));
+                sEdition.append('-');
+                j--;
+            }
+
+        else
+            while (i > 0) {
+                sEdition.append(s.charAt(i-1));
+                tEdition.append('-');
+                i--;
+            }
+
         List<String> editedSeqs = new LinkedList<>();
         editedSeqs.add(sEdition.reverse().toString());
         editedSeqs.add(tEdition.reverse().toString());
