@@ -245,6 +245,8 @@ public class Alignment {
         return path;
     }
 
+    // Task 4
+
     /**
      * scoreAlignment (aFileName) : this methods computes and displays one optimal alignment between two
      * sequences of amino acids given in a input file using the Blosum50 matrix.
@@ -267,8 +269,7 @@ public class Alignment {
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
 
-        System.out.println(sEdition);
-        System.out.println(tEdition);
+        Display.printScore(sEdition, tEdition);
     }
 
 }
