@@ -125,4 +125,8 @@ public class Display {
         System.out.println(t);
         System.out.println("Score of aligment with affine penalty: " + computeAlignmentAffineScore(s, t, openCost, increaseCost) + "\n");
     }
+
+    public static void main (String[] arg) {
+        
+    }
 }
