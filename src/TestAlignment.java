@@ -44,6 +44,6 @@ public class TestAlignment {
         System.out.println ("\nTesting scoreAlignment method...");
 
         //Test 1
-        result = Alignment.scoreAlignment("OptSeq_Res8.txt");
+        Alignment.scoreAlignment("OptSeq_Res8.txt");
     }
 }

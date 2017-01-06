@@ -139,8 +139,7 @@ public class Alignment {
      * sequences given in an input file.
      */
     public static String distanceEdition (String aFileName) throws IOException {
-        Path p = Paths.get(aFileName);
-        List<String> lines = Files.readAllLines(p, ENCODING);
+        List<String> lines = readFiles(aFileName);
 
         if (lines.size() != 2)
             throw new java.lang.IllegalArgumentException();
@@ -151,19 +150,20 @@ public class Alignment {
 
         List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
 
-        if (editedSeqs.size() != 3)
+        if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();
 
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
-        String optimalAlignment = editedSeqs.get(2);
 
-        // Displaying: work later
-        System.out.println (sEdition);
-        System.out.println (tEdition);
-        System.out.println (optimalAlignment);
+        Display.printAlignment(sEdition, tEdition);
 
-        return optimalAlignment;
+        return Display.computeAlignment(sEdition, tEdition);
+    }
+
+    private static List<String> readFiles (String aFileName) throws IOException {
+        Path p = Paths.get(aFileName);
+        return Files.readAllLines(p, ENCODING);
     }
 
     /**
@@ -176,15 +176,10 @@ public class Alignment {
 
         StringBuilder sEdition = new StringBuilder();
         StringBuilder tEdition = new StringBuilder();
-        StringBuilder optimalAlignment = new StringBuilder();
 
         int i = n, j = m;
         while (i > 0 && j > 0) {
             if (path[i][j] == 0) {
-
-                if (s.charAt(i-1) == t.charAt(j-1))
-                    optimalAlignment.append(s.charAt(i-1));
-
                 sEdition.append(s.charAt(i-1));
                 tEdition.append(t.charAt(j-1));
                 i--;
@@ -202,10 +197,9 @@ public class Alignment {
             }
         }
 
-        List<String> editedSeqs = new LinkedList<String>();
+        List<String> editedSeqs = new LinkedList<>();
         editedSeqs.add(sEdition.reverse().toString());
         editedSeqs.add(tEdition.reverse().toString());
-        editedSeqs.add(optimalAlignment.reverse().toString());
 
         return editedSeqs;
     }
@@ -255,9 +249,8 @@ public class Alignment {
      * scoreAlignment (aFileName) : this methods computes and displays one optimal alignment between two
      * sequences of amino acids given in a input file using the Blosum50 matrix.
      */
-    public static String scoreAlignment (String aFileName) throws IOException {
-        Path p = Paths.get(aFileName);
-        List<String> lines = Files.readAllLines(p, ENCODING);
+    public static void scoreAlignment (String aFileName) throws IOException {
+        List<String> lines = readFiles(aFileName);
 
         if (lines.size() != 2)
             throw new java.lang.IllegalArgumentException();
@@ -268,19 +261,14 @@ public class Alignment {
 
         List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
 
-        if (editedSeqs.size() != 3)
+        if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();
 
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
-        String optimalAlignment = editedSeqs.get(2);
 
-        // Displaying: work later
-        System.out.println (sEdition);
-        System.out.println (tEdition);
-        System.out.println (optimalAlignment);
-
-        return optimalAlignment;
+        System.out.println(sEdition);
+        System.out.println(tEdition);
     }
 
 }
