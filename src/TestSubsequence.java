@@ -6,6 +6,9 @@ public class TestSubsequence {
 
         String result;
 
+        // lcs
+        System.out.println ("Testing lcs method...");
+
         //Test 1
         result = Subsequence.lcs("SubSeq_Res52.txt");
         if (result.length() != 52)
@@ -26,5 +29,15 @@ public class TestSubsequence {
             System.out.println ("SubSeq_Rec3275: FAILED");
         else
             System.out.println ("SubSeq_Rec3275: PASSED");
+
+        // distanceEdition
+        System.out.println ("\nTesting distanceEdition method...");
+
+        //Test 1
+        result = Subsequence.distanceEdition("OptSeq_Res8.txt");
+        if (result.length() != 8)
+            System.out.println ("OptSeq_Res8: FAILED");
+        else
+            System.out.println ("OptSeq_Res8: PASSED");
     }
 }

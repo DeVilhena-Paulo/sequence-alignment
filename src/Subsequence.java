@@ -158,27 +158,30 @@ public class Subsequence {
         while (i > 0 && j > 0) {
             if (path[i][j] == 0) {
 
-                if (s.charAt(i-1) == t.charAt(i-1))
+                if (s.charAt(i-1) == t.charAt(j-1))
                     optimalAlignment.append(s.charAt(i-1));
 
                 sEdition.append(s.charAt(i-1));
-                tEdition.append(t.charAt(i-1));
+                tEdition.append(t.charAt(j-1));
                 i--;
                 j--;
             }
             else if (path[i][j] == 1) { // Deleting was chosen
+                sEdition.append(s.charAt(i-1));
                 tEdition.append('-');
                 i--;
             }
             else { // Inserting was chosen
-                sEdition.append(s.charAt('-'));
+                tEdition.append(t.charAt(j-1));
+                sEdition.append('-');
                 j--;
             }
         }
 
-        System.out.println (sEdition.reverse());
-        System.out.println (tEdition.reverse());
-        System.out.println (optimalAlignment.reverse());
+        // Displaying: work later
+        // System.out.println (sEdition.reverse());
+        // System.out.println (tEdition.reverse());
+        // System.out.println (optimalAlignment.reverse());
 
         return optimalAlignment.reverse().toString();
     }
