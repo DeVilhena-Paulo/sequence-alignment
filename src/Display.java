@@ -71,6 +71,6 @@ public class Display {
     public static void printScore (String s, String t) {
         System.out.println(s);
         System.out.println(t);
-        System.out.println("Score of aligment : " + computeAlignmentScore(s, t));
+        System.out.println("Score of aligment : " + computeAlignmentScore(s, t) + "\n");
     }
 }

@@ -36,14 +36,24 @@ public class TestAlignment {
         //Test 1
         result = Alignment.distanceEdition("OptSeq_Res8.txt");
         if (result.length() != 8)
-            System.out.println ("OptSeq_Res8: FAILED");
+            System.out.println ("OptSeq_Res8: FAILED\n");
         else
-            System.out.println ("OptSeq_Res8: PASSED");
+            System.out.println ("OptSeq_Res8: PASSED\n");
+
+        // Test 2
+        result = Alignment.distanceEdition("OptSeq_Res10.txt");
+        if (result.length() != 10)
+            System.out.println ("OptSeq_Res10: FAILED\n");
+        else
+            System.out.println ("OptSeq_Res10: PASSED\n");
 
         // scoreAlignment
-        System.out.println ("\nTesting scoreAlignment method...");
+        System.out.println ("Testing scoreAlignment method...");
 
         //Test 1
         Alignment.scoreAlignment("OptSeq_Res8.txt");
+
+        //Test 2
+        Alignment.scoreAlignment("OptSeq_Res10.txt");
     }
 }

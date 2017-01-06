@@ -211,7 +211,7 @@ public class Alignment {
      * alignment between the first i characters of the string s to the first j characters of the string t, being
      * able to manage the memoization process.
      */
-    private static int[][] scoreAlignment (String s, String t) {
+    private static int[][] scoreAlignment (String s, String t, float openCost, float increaseCost) {
         int n = s.length();
         int m = t.length();
         float[][] S = new float [n + 1][m + 1];
@@ -228,16 +228,32 @@ public class Alignment {
         for (int i = 1; i < n + 1; i++) {
             for (int j = 1; j < m + 1; j++) {
 
-                S[i][j] = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
+                float alignCost = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
+
+                float deletionCost = S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-');
+                if (j != m) { // if I'm opening a gap in the end of the sequence t, the penalty does not count
+                    deletionCost += increaseCost;
+                    if (i == 1 || path[i - 1][j] == 0)
+                        deletionCost += openCost;
+                }
+
+                float insertionCost = S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-');
+                if (i != n) { // if I'm opening a gap in the end of the sequence s, the penalty does not count
+                    insertionCost += increaseCost;
+                    if (j == 1 || path[i][j - 1] == 0)
+                        insertionCost += openCost;
+                }
+
+                S[i][j] = alignCost;
                 path[i][j] = 0;
 
-                if (S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-') > S[i][j]) {
-                    S[i][j] = S[i - 1][j] + Blosum50.getScore(s.charAt(i - 1), '-');
+                if (deletionCost > S[i][j]) {
+                    S[i][j] = deletionCost;
                     path[i][j] = 1;
                 }
 
-                if (S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-') > S[i][j]) {
-                    S[i][j] = S[i][j - 1] + Blosum50.getScore(t.charAt(j - 1), '-');
+                if (insertionCost > S[i][j]) {
+                    S[i][j] = insertionCost;
                     path[i][j] = 2;
                 }
             }
@@ -259,7 +275,7 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
-        int[][] path = scoreAlignment(s,t);
+        int[][] path = scoreAlignment(s, t, 0, 0);
 
         List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
 
@@ -270,6 +286,33 @@ public class Alignment {
         String tEdition = editedSeqs.get(1);
 
         Display.printScore(sEdition, tEdition);
+    }
+
+    // Task 5
+
+    /**
+     * scoreAlignment (aFileName) : this methods computes and displays one optimal alignment between two
+     * sequences of amino acids given in a input file using the Blosum50 matrix.
+     */
+    public static void affinePenalty (float openCost, float increaseCost, String aFileName) throws IOException {
+        List<String> lines = readFiles(aFileName);
+
+        if (lines.size() != 2)
+            throw new java.lang.IllegalArgumentException();
+
+        String s = lines.get(0);
+        String t = lines.get(1);
+        /*int[][] path = scoreAlignment(s,t);
+
+        List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
+
+        if (editedSeqs.size() != 2)
+            throw new java.lang.IllegalArgumentException();
+
+        String sEdition = editedSeqs.get(0);
+        String tEdition = editedSeqs.get(1);
+
+        Display.printScore(sEdition, tEdition);*/
     }
 
 }
