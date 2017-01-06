@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class Subsequence {
+public class Alignment {
 
     final static Charset ENCODING = StandardCharsets.UTF_8;
 
