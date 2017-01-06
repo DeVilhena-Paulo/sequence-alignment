@@ -39,5 +39,11 @@ public class TestAlignment {
             System.out.println ("OptSeq_Res8: FAILED");
         else
             System.out.println ("OptSeq_Res8: PASSED");
+
+        // scoreAlignment
+        System.out.println ("\nTesting scoreAlignment method...");
+
+        //Test 1
+        result = Alignment.scoreAlignment("OptSeq_Res8.txt");
     }
 }

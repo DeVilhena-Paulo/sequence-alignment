@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.LinkedList;
 
 public class Alignment {
 
@@ -55,7 +56,7 @@ public class Alignment {
 
     /**
      * lcs (aFileName) : this methods computes the longest common subsequence between two sequences of
-     * letters given in a file which he name is stored in the String aFileName.
+     * letters given in a input file.
      */
     public static String lcs (String aFileName) throws IOException {
         Path p = Paths.get(aFileName);
@@ -93,10 +94,10 @@ public class Alignment {
      * distanceEdition (s, t) : this method computes the minimum number of edition operations (delete a
      * letter, insert or transform a letter) to go from the sequence of letters s to the sequence t using
      * dynamic programming. The array d stores at d[i][j] the minimum number of edition operations to go
-     * from the fisrt i characters of the string s to the first j characters of the string t and by that
-     * it manages the memoization process.
+     * from the first i characters of the string s to the first j characters of the string t, being able
+     * to manage the memoization process.
      */
-    public static int[][] distanceEdition (String s, String t) {
+    private static int[][] distanceEdition (String s, String t) {
         int n = s.length();
         int m = t.length();
         int[][] d = new int [n + 1][m + 1];
@@ -108,33 +109,34 @@ public class Alignment {
         for (int j = 0; j < m + 1; j++)
             d[0][j] = j; // j insertions to pass from an empty string to the first j characters of t
 
-        for (int i = 1; i < n + 1; i++) {
+        for (int i = 1; i < n + 1; i++)
             for (int j = 1; j < m + 1; j++) {
 
-                d[i][j] = d[i-1][j-1];
+                d[i][j] = d[i - 1][j - 1];
                 path[i][j] = 0;
 
-                if (s.charAt(i-1) != t.charAt(j-1)) {
+                if (s.charAt(i - 1) != t.charAt(j - 1))
                     d[i][j] += 1;
-                }
-                if (d[i-1][j] + 1 < d[i][j]) {
+
+                if (d[i - 1][j] + 1 < d[i][j]) {
                     d[i][j] = d[i - 1][j] + 1;
                     path[i][j] = 1;
                 }
-                if (d[i][j-1] + 1 < d[i][j]) {
+                if (d[i][j - 1] + 1 < d[i][j]) {
                     d[i][j] = d[i][j - 1] + 1;
                     path[i][j] = 2;
                 }
             }
-        }
         return path;
     }
+
+
 
     // Task 3
 
     /**
      * distanceEdition (aFileName) : this methods computes and displays one optimal alignment between two
-     * sequences given in an input file which he name is stored in the String aFileName.
+     * sequences given in an input file.
      */
     public static String distanceEdition (String aFileName) throws IOException {
         Path p = Paths.get(aFileName);
@@ -145,10 +147,32 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
+        int[][] path = distanceEdition(s, t);
 
+        List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
+
+        if (editedSeqs.size() != 3)
+            throw new java.lang.IllegalArgumentException();
+
+        String sEdition = editedSeqs.get(0);
+        String tEdition = editedSeqs.get(1);
+        String optimalAlignment = editedSeqs.get(2);
+
+        // Displaying: work later
+        System.out.println (sEdition);
+        System.out.println (tEdition);
+        System.out.println (optimalAlignment);
+
+        return optimalAlignment;
+    }
+
+    /**
+     * optimalAlignmentBacktrack : does the backtracking of the array path to reconstruct one optimal
+     * alignment between the sequences s and t
+     */
+    private static List<String> optimalAlignmentBacktrack (String s, String t, int[][] path) {
         int n = s.length();
         int m = t.length();
-        int[][] path = distanceEdition(s,t);
 
         StringBuilder sEdition = new StringBuilder();
         StringBuilder tEdition = new StringBuilder();
@@ -178,12 +202,85 @@ public class Alignment {
             }
         }
 
-        // Displaying: work later
-        // System.out.println (sEdition.reverse());
-        // System.out.println (tEdition.reverse());
-        // System.out.println (optimalAlignment.reverse());
+        List<String> editedSeqs = new LinkedList<String>();
+        editedSeqs.add(sEdition.reverse().toString());
+        editedSeqs.add(tEdition.reverse().toString());
+        editedSeqs.add(optimalAlignment.reverse().toString());
 
-        return optimalAlignment.reverse().toString();
+        return editedSeqs;
+    }
+
+
+    /**
+     * scoreAlignment (s, t) : this method computes the maximum score of the alignment between two sequences
+     * of letters, s and t, using dynamic programming. The array S stores at S[i][j] the maximum score of the
+     * alignment between the first i characters of the string s to the first j characters of the string t, being
+     * able to manage the memoization process.
+     */
+    private static int[][] scoreAlignment (String s, String t) {
+        int n = s.length();
+        int m = t.length();
+        float[][] S = new float [n + 1][m + 1];
+        int[][] path = new int [n + 1][m + 1];
+
+        S[0][0] = 0F;
+
+        for (int i = 1; i < n + 1; i++)
+            S[i][0] = S[i-1][0] + Blosum50.getScore(s.charAt(i - 1), '-'); // deletion of i_th character from s
+
+        for (int j = 1; j < m + 1; j++)
+            S[0][j] = S[0][j-1] + Blosum50.getScore(t.charAt(j - 1), '-'); // insertion of j_th character from t in s
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+
+                S[i][j] = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
+                path[i][j] = 0;
+
+                if (S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-') > S[i][j]) {
+                    S[i][j] = S[i - 1][j] + Blosum50.getScore(s.charAt(i - 1), '-');
+                    path[i][j] = 1;
+                }
+
+                if (S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-') > S[i][j]) {
+                    S[i][j] = S[i][j - 1] + Blosum50.getScore(t.charAt(j - 1), '-');
+                    path[i][j] = 2;
+                }
+            }
+        }
+        return path;
+    }
+
+    /**
+     * scoreAlignment (aFileName) : this methods computes and displays one optimal alignment between two
+     * sequences of amino acids given in a input file using the Blosum50 matrix.
+     */
+    public static String scoreAlignment (String aFileName) throws IOException {
+        Path p = Paths.get(aFileName);
+        List<String> lines = Files.readAllLines(p, ENCODING);
+
+        if (lines.size() != 2)
+            throw new java.lang.IllegalArgumentException();
+
+        String s = lines.get(0);
+        String t = lines.get(1);
+        int[][] path = scoreAlignment(s,t);
+
+        List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
+
+        if (editedSeqs.size() != 3)
+            throw new java.lang.IllegalArgumentException();
+
+        String sEdition = editedSeqs.get(0);
+        String tEdition = editedSeqs.get(1);
+        String optimalAlignment = editedSeqs.get(2);
+
+        // Displaying: work later
+        System.out.println (sEdition);
+        System.out.println (tEdition);
+        System.out.println (optimalAlignment);
+
+        return optimalAlignment;
     }
 
 }
