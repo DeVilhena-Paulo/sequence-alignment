@@ -32,7 +32,7 @@ public class Display {
         System.out.println ("Optimal alignment : " + aux + "; Size : " + aux.length());
     }
 
-    public static String computeAlignment (String s, String t) {
+    public static String computeAlignmentSeq (String s, String t) {
         int n = s.length();
         int m = t.length();
 
@@ -72,5 +72,57 @@ public class Display {
         System.out.println(s);
         System.out.println(t);
         System.out.println("Score of aligment : " + computeAlignmentScore(s, t) + "\n");
+    }
+
+    public static float computeAlignmentAffineScore (String s, String t, float openCost, float increaseCost) {
+        int n = s.length();
+        int m = t.length();
+
+        if (n != m) {
+            System.out.println ("Error: string sizes do not match");
+            throw new java.lang.IllegalArgumentException();
+        }
+
+        float score = 0F;
+        float penalty = 0F;
+        float sAux = 0F;
+        float tAux = 0F;
+        boolean sOpen = false;
+        boolean tOpen = false;
+        if (n > 0)
+            score += Blosum50.getScore(s.charAt(0), t.charAt(0));
+        for (int i = 1; i < n; i++) {
+            if (s.charAt(i - 1) != '-' && s.charAt(i) == '-') {
+                sOpen = true;
+                sAux = openCost;
+            }
+            else if (s.charAt(i - 1) == '-' && s.charAt(i) != '-') {
+                penalty += sAux;
+                sOpen = false;
+            }
+            if (sOpen) sAux += increaseCost;
+
+            if (t.charAt(i - 1) != '-' && t.charAt(i) == '-') {
+                tOpen = true;
+                tAux = openCost;
+            }
+            else if (t.charAt(i - 1) == '-' && t.charAt(i) != '-') {
+                penalty += tAux;
+                tOpen = false;
+            }
+            if (tOpen) tAux += increaseCost;
+
+
+            score += Blosum50.getScore(s.charAt(i), t.charAt(i));
+        }
+        score -= penalty;
+
+        return score;
+    }
+
+    public static void printAffineScore (String s, String t, float openCost, float increaseCost) {
+        System.out.println(s);
+        System.out.println(t);
+        System.out.println("Score of aligment with affine penalty: " + computeAlignmentAffineScore(s, t, openCost, increaseCost) + "\n");
     }
 }

@@ -158,7 +158,7 @@ public class Alignment {
 
         Display.printAlignment(sEdition, tEdition);
 
-        return Display.computeAlignment(sEdition, tEdition);
+        return Display.computeAlignmentSeq(sEdition, tEdition);
     }
 
     private static List<String> readFiles (String aFileName) throws IOException {
@@ -242,32 +242,32 @@ public class Alignment {
         for (int i = 1; i < n + 1; i++) {
             for (int j = 1; j < m + 1; j++) {
 
-                float alignCost = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
+                float alignScore = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
 
-                float deletionCost = S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-');
+                float deletionScore = S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-');
                 if (j != m) { // if I'm opening a gap in the end of the sequence t, the penalty does not count
-                    deletionCost += increaseCost;
+                    deletionScore -= increaseCost;
                     if (i == 1 || path[i - 1][j] == 0)
-                        deletionCost += openCost;
+                        deletionScore -= openCost;
                 }
 
-                float insertionCost = S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-');
+                float insertionScore = S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-');
                 if (i != n) { // if I'm opening a gap in the end of the sequence s, the penalty does not count
-                    insertionCost += increaseCost;
+                    insertionScore -= increaseCost;
                     if (j == 1 || path[i][j - 1] == 0)
-                        insertionCost += openCost;
+                        insertionScore -= openCost;
                 }
 
-                S[i][j] = alignCost;
+                S[i][j] = alignScore;
                 path[i][j] = 0;
 
-                if (deletionCost > S[i][j]) {
-                    S[i][j] = deletionCost;
+                if (deletionScore > S[i][j]) {
+                    S[i][j] = deletionScore;
                     path[i][j] = 1;
                 }
 
-                if (insertionCost > S[i][j]) {
-                    S[i][j] = insertionCost;
+                if (insertionScore > S[i][j]) {
+                    S[i][j] = insertionScore;
                     path[i][j] = 2;
                 }
             }
@@ -305,10 +305,11 @@ public class Alignment {
     // Task 5
 
     /**
-     * scoreAlignment (aFileName) : this methods computes and displays one optimal alignment between two
-     * sequences of amino acids given in a input file using the Blosum50 matrix.
+     * affinePenalty (aFileName, openCost, increaseCost) : this method takes two additional parameters for
+     * opening gap penalty and the increasing gap penalty and computes/displays one optimal alignment between
+     * two sequences of amino acids given in a input file using the Blosum50 matrix.
      */
-    public static void affinePenalty (float openCost, float increaseCost, String aFileName) throws IOException {
+    public static void affinePenalty (String aFileName, float openCost, float increaseCost) throws IOException {
         List<String> lines = readFiles(aFileName);
 
         if (lines.size() != 2)
@@ -316,7 +317,7 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
-        /*int[][] path = scoreAlignment(s,t);
+        int[][] path = scoreAlignment(s, t, openCost, increaseCost);
 
         List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
 
@@ -326,7 +327,7 @@ public class Alignment {
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
 
-        Display.printScore(sEdition, tEdition);*/
+        Display.printAffineScore(sEdition, tEdition, openCost, increaseCost);
     }
 
 }
