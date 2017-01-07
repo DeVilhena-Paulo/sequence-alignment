@@ -112,5 +112,4 @@ public class Blosum50 {
 			return scores[tabInt[1]][tabInt[0]];
 
 	}
-
 }

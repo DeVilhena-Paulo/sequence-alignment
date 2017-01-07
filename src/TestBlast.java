@@ -1,7 +1,13 @@
-package PACKAGE_NAME;
+import java.io.IOException;
 
-/**
- * Created by Paulo on 07/01/2017.
- */
 public class TestBlast {
+
+    public static void main (String[] args) throws IOException {
+        // perfectMatches
+        System.out.println ("Testing Blast.perfectMatches method...");
+
+        //Test 1
+        //Blast.perfectMatches("Blast.txt", 1);
+    }
+
 }

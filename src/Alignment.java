@@ -11,6 +11,11 @@ public class Alignment {
 
     final static Charset ENCODING = StandardCharsets.UTF_8;
 
+    private static List<String> readFiles (String aFileName) throws IOException {
+        Path p = Paths.get(aFileName);
+        return Files.readAllLines(p, ENCODING);
+    }
+
     /**
      * lcs (s, t): this method computes the longest common subsequence between two sequences of letters,
      * the first has length n and the second m, using dynamic programming. The array M stores at M[i][j]
@@ -91,86 +96,10 @@ public class Alignment {
     }
 
     /**
-     * distanceEdition (s, t) : this method computes the minimum number of edition operations (delete a
-     * letter, insert or transform a letter) to go from the sequence of letters s to the sequence t using
-     * dynamic programming. The array d stores at d[i][j] the minimum number of edition operations to go
-     * from the first i characters of the string s to the first j characters of the string t, being able
-     * to manage the memoization process.
-     */
-    private static int[][] distanceEdition (String s, String t) {
-        int n = s.length();
-        int m = t.length();
-        int[][] d = new int [n + 1][m + 1];
-        int[][] path = new int [n + 1][m + 1];
-
-        for (int i = 0; i < n + 1; i++)
-            d[i][0] = i; // i deletions to pass from the first i characters of s to an empty string
-
-        for (int j = 0; j < m + 1; j++)
-            d[0][j] = j; // j insertions to pass from an empty string to the first j characters of t
-
-        for (int i = 1; i < n + 1; i++)
-            for (int j = 1; j < m + 1; j++) {
-
-                d[i][j] = d[i - 1][j - 1];
-                path[i][j] = 0;
-
-                if (s.charAt(i - 1) != t.charAt(j - 1))
-                    d[i][j] += 1;
-
-                if (d[i - 1][j] + 1 < d[i][j]) {
-                    d[i][j] = d[i - 1][j] + 1;
-                    path[i][j] = 1;
-                }
-                if (d[i][j - 1] + 1 < d[i][j]) {
-                    d[i][j] = d[i][j - 1] + 1;
-                    path[i][j] = 2;
-                }
-            }
-        return path;
-    }
-
-
-
-    // Task 3
-
-    /**
-     * distanceEdition (aFileName) : this methods computes and displays one optimal alignment between two
-     * sequences given in an input file.
-     */
-    public static String distanceEdition (String aFileName) throws IOException {
-        List<String> lines = readFiles(aFileName);
-
-        if (lines.size() != 2)
-            throw new java.lang.IllegalArgumentException();
-
-        String s = lines.get(0);
-        String t = lines.get(1);
-        int[][] path = distanceEdition(s, t);
-
-        List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
-
-        if (editedSeqs.size() != 2)
-            throw new java.lang.IllegalArgumentException();
-
-        String sEdition = editedSeqs.get(0);
-        String tEdition = editedSeqs.get(1);
-
-        Display.printAlignment(sEdition, tEdition);
-
-        return Display.computeAlignmentSeq(sEdition, tEdition);
-    }
-
-    private static List<String> readFiles (String aFileName) throws IOException {
-        Path p = Paths.get(aFileName);
-        return Files.readAllLines(p, ENCODING);
-    }
-
-    /**
-     * optimalAlignmentBacktrack : does the backtracking of the array path to reconstruct one optimal
+     * backtracking : does the backtracking of the array path to reconstruct one optimal
      * alignment between the sequences s and t
      */
-    private static List<String> optimalAlignmentBacktrack (String s, String t, int[][] path) {
+    public static List<String> backtracking (String s, String t, int[][] path) {
         int n = s.length();
         int m = t.length();
 
@@ -220,12 +149,12 @@ public class Alignment {
 
 
     /**
-     * scoreAlignment (s, t) : this method computes the maximum score of the alignment between two sequences
+     * scoreBlosum50 (s, t) : this method computes the maximum score of the alignment between two sequences
      * of letters, s and t, using dynamic programming. The array S stores at S[i][j] the maximum score of the
      * alignment between the first i characters of the string s to the first j characters of the string t, being
      * able to manage the memoization process.
      */
-    private static int[][] scoreAlignment (String s, String t, float openCost, float increaseCost) {
+    private static int[][] scoreBlosum50 (String s, String t, float openCost, float increaseCost) {
         int n = s.length();
         int m = t.length();
         float[][] S = new float [n + 1][m + 1];
@@ -278,10 +207,10 @@ public class Alignment {
     // Task 4
 
     /**
-     * scoreAlignment (aFileName) : this methods computes and displays one optimal alignment between two
+     * scoreBlosum50 (aFileName) : this methods computes and displays one optimal alignment between two
      * sequences of amino acids given in a input file using the Blosum50 matrix.
      */
-    public static void scoreAlignment (String aFileName) throws IOException {
+    public static void scoreBlosum50 (String aFileName) throws IOException {
         List<String> lines = readFiles(aFileName);
 
         if (lines.size() != 2)
@@ -289,9 +218,9 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
-        int[][] path = scoreAlignment(s, t, 0, 0);
+        int[][] path = scoreBlosum50(s, t, 0, 0);
 
-        List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
+        List<String> editedSeqs = backtracking(s, t, path);
 
         if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();
@@ -317,9 +246,9 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
-        int[][] path = scoreAlignment(s, t, openCost, increaseCost);
+        int[][] path = scoreBlosum50(s, t, openCost, increaseCost);
 
-        List<String> editedSeqs = optimalAlignmentBacktrack(s, t, path);
+        List<String> editedSeqs = backtracking(s, t, path);
 
         if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();
@@ -328,6 +257,68 @@ public class Alignment {
         String tEdition = editedSeqs.get(1);
 
         Display.printAffineScore(sEdition, tEdition, openCost, increaseCost);
+    }
+
+    public static float computeScoreBlosum50 (String s, String t, float openCost, float increaseCost) {
+        int n = s.length();
+        int m = t.length();
+
+        if (n != m) {
+            System.out.println ("Error: string sizes do not match");
+            throw new java.lang.IllegalArgumentException();
+        }
+
+        float score = 0F;
+        float penalty = 0F;
+        float sAux = 0F;
+        float tAux = 0F;
+        boolean sOpen = false;
+        boolean tOpen = false;
+        if (n > 0)
+            score += Blosum50.getScore(s.charAt(0), t.charAt(0));
+        for (int i = 1; i < n; i++) {
+            if (s.charAt(i - 1) != '-' && s.charAt(i) == '-') {
+                sOpen = true;
+                sAux = openCost;
+            }
+            else if (s.charAt(i - 1) == '-' && s.charAt(i) != '-') {
+                penalty += sAux;
+                sOpen = false;
+            }
+            if (sOpen) sAux += increaseCost;
+
+            if (t.charAt(i - 1) != '-' && t.charAt(i) == '-') {
+                tOpen = true;
+                tAux = openCost;
+            }
+            else if (t.charAt(i - 1) == '-' && t.charAt(i) != '-') {
+                penalty += tAux;
+                tOpen = false;
+            }
+            if (tOpen) tAux += increaseCost;
+
+
+            score += Blosum50.getScore(s.charAt(i), t.charAt(i));
+        }
+        score -= penalty;
+
+        return score;
+    }
+
+    public static float computeScoreBlosum50 (String s, String t) {
+        int n = s.length();
+        int m = t.length();
+
+        if (n != m) {
+            System.out.println ("Error: string sizes do not match");
+            throw new java.lang.IllegalArgumentException();
+        }
+
+        float score = 0F;
+        for (int i = 0; i < n; i++)
+            score += Blosum50.getScore(s.charAt(i), t.charAt(i));
+
+        return score;
     }
 
 }
