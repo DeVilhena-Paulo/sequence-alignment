@@ -259,6 +259,10 @@ public class Alignment {
         Display.printAffineScore(sEdition, tEdition, openCost, increaseCost);
     }
 
+    /**
+     * computeScoreBlosum50 (s, t, openCost, increaseCost) : this method computes the score of the alignment
+     * of s and t using the Blosum 50 as the substitution matrix. It takes into account the gap penalties
+     */
     public static float computeScoreBlosum50 (String s, String t, float openCost, float increaseCost) {
         int n = s.length();
         int m = t.length();
@@ -305,6 +309,10 @@ public class Alignment {
         return score;
     }
 
+    /**
+     * computeScoreBlosum50 (s, t, openCost, increaseCost) : this method computes the score of the alignment of
+     * s and t using the Blosum 50 as the substitution matrix. It does not take into account the gap penalties
+     */
     public static float computeScoreBlosum50 (String s, String t) {
         int n = s.length();
         int m = t.length();
@@ -319,6 +327,37 @@ public class Alignment {
             score += Blosum50.getScore(s.charAt(i), t.charAt(i));
 
         return score;
+    }
+
+    /**
+     * optimalLocal (s, t, openCost, increaseCost) : this method computes the optimal local alignment between
+     * two sequences of letters, s and t, using dynamic programming (Smith-Waterman Algorithm). The array H
+     * stores at H[i][j] the maximum score of the alignment so far and the array path encodes at path[i][j] the
+     * choices taken.
+     */
+
+    private static List<float[][]> optimalLocal (String s, String t, float openCost, float increaseCost) {
+        return null;
+    }
+
+    /**
+     * backtracking (s, t, score, path) : does the backtracking of the array path to reconstruct one optimal
+     * local alignment between the sequences s and t.
+     */
+    private static List<String> backtracking (String s, String t, float[][] score, float[][] path){
+        return null;
+    }
+
+
+    //Task 6
+
+    /**
+     * optimalLocal (aFileName, openCost, increaseCost) : this method computes/displays one optimal local
+     * alignment between two sequences of amino acids given in a input file using the Blosum50 matrix and
+     * with affine gap penalty.
+     */
+    public static void optimalLocal (String aFileName, float openCost, float increaseCost) throws IOException {
+
     }
 
 }

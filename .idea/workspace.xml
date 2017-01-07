@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3fb614b-1f4d-452e-9cc8-27d33741d521" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Blast.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Edition.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/TestBlast.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/TestEdition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/Alignment.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/Alignment.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/Display.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/Display.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/TestAlignment.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/TestAlignment.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Alignment.java" afterPath="$PROJECT_DIR$/src/Alignment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Blosum50.java" afterPath="$PROJECT_DIR$/src/Blosum50.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Display.java" afterPath="$PROJECT_DIR$/src/Display.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TestAlignment.java" afterPath="$PROJECT_DIR$/src/TestAlignment.java" />
     </list>
     <ignored path="DNA-project-java.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,10 +28,12 @@
       <file leaf-file-name="Alignment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Alignment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2057">
-              <caret line="307" column="44" selection-start-line="307" selection-start-column="44" selection-end-line="307" selection-end-column="44" />
+            <state relative-caret-position="5321">
+              <caret line="313" column="7" selection-start-line="313" selection-start-column="7" selection-end-line="313" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#11867#11868#0" expanded="true" />
+                <element signature="e#11894#11895#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -170,13 +162,13 @@
         <option value="$PROJECT_DIR$/src/Subsequence.java" />
         <option value="$PROJECT_DIR$/src/TestSubsequence.java" />
         <option value="$PROJECT_DIR$/src/Blosum50.java" />
-        <option value="$PROJECT_DIR$/src/Alignment.java" />
         <option value="$PROJECT_DIR$/src/Display.java" />
         <option value="$PROJECT_DIR$/src/Blast.java" />
         <option value="$PROJECT_DIR$/src/Edition.java" />
         <option value="$PROJECT_DIR$/src/TestBlast.java" />
         <option value="$PROJECT_DIR$/src/TestEdition.java" />
         <option value="$PROJECT_DIR$/src/TestAlignment.java" />
+        <option value="$PROJECT_DIR$/src/Alignment.java" />
       </list>
     </option>
   </component>
@@ -842,16 +834,16 @@
       <workItem from="1483196512206" duration="1980000" />
       <workItem from="1483540131534" duration="9662000" />
       <workItem from="1483657608137" duration="15968000" />
-      <workItem from="1483719317713" duration="33327000" />
+      <workItem from="1483719317713" duration="34691000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60937000" />
+    <option name="totallyTimeSpent" value="62301000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -862,7 +854,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3618635" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.48429036" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36944744" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17430703" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -906,6 +898,8 @@
           <caret line="270" column="0" selection-start-line="270" selection-start-column="0" selection-end-line="270" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11867#11868#0" expanded="true" />
+            <element signature="e#11894#11895#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1120,10 +1114,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Alignment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2057">
-          <caret line="307" column="44" selection-start-line="307" selection-start-column="44" selection-end-line="307" selection-end-column="44" />
+        <state relative-caret-position="5321">
+          <caret line="313" column="7" selection-start-line="313" selection-start-column="7" selection-end-line="313" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11867#11868#0" expanded="true" />
+            <element signature="e#11894#11895#0" expanded="true" />
           </folding>
         </state>
       </provider>
