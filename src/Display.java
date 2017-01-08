@@ -52,23 +52,27 @@ public class Display {
         System.out.println ("Optimal alignment : " + aux + "; Size : " + aux.length());
     }
 
-    public static void printScore (String s, String t) {
+    public static void printScore (String s, String t) { // Task 4: Substitution matrix
         System.out.println(s);
         System.out.println(t);
-        System.out.println("Score of alignment : " + Alignment.computeScoreBlosum50(s, t) + "\n");
-        System.out.println("Score of alignment with affine penalty: " + Alignment.computeScoreBlosum50(s, t, 10, 1) + "\n");
+        System.out.println("Score of alignment : " + Computation.blosum50Score(s, t) + "\n");
+        System.out.println("Score of alignment with affine penalty: " + Computation.blosum50Score(s, t, 10, 1) + "\n");
     }
 
-    public static void printAffineScore (String s, String t, float openCost, float increaseCost) {
+    public static void printAffineScore (String s, String t, float openCost, float increaseCost) { // Task 5: Affine Penalty
         System.out.println(s);
         System.out.println(t);
-        System.out.println("Score of alignment with affine penalty: " + Alignment.computeScoreBlosum50(s, t, openCost, increaseCost) + "\n");
+        System.out.println("Score of alignment with affine penalty: " + Computation.blosum50Score(s, t, openCost, increaseCost) + "\n");
     }
 
-    public static void printLocal (String s, String t, float openCost, float increaseCost) {
+    public static void printLocal (String s, String t, float openCost, float increaseCost) { // Task 6: Local Optimal
         System.out.println (s);
         System.out.println (alignDisplay(s, t));
         System.out.println (t);
-        System.out.println("Score of alignment with affine penalty: " + Alignment.computeScoreBlosum50(s, t, openCost, increaseCost) + " ; size: " + s.length() + "\n");
+        System.out.println("Score of alignment with affine penalty: " + Computation.blosum50Score(s, t, openCost, increaseCost) + " ; size: " + s.length() + "\n");
+    }
+
+    public static void printIntermediateBlastResults (int index1, int index2, int indI, int indJ, float score) {
+        System.out.println("indeces: (" + index1 + ", " + index2 + "); indI: " + indI + "; indJ: " + indJ + "; score: " + score );
     }
 }

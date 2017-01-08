@@ -54,5 +54,8 @@ public class TestAlignment {
         //Test 4
         Alignment.affinePenalty("OptSeq_Res.txt", 10, 1);
 
+        //Test 5
+        Alignment.affinePenalty("CartsCat.txt", 10, 1);
+
     }
 }

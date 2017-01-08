@@ -21,7 +21,7 @@ public class Blast {
         }
     }
 
-    private static class Triple <ItemA, ItemB, ItemC> {
+    public static class Triple <ItemA, ItemB, ItemC> {
         public ItemA first;
         public ItemB second;
         public ItemC third;
@@ -40,6 +40,11 @@ public class Blast {
 
     // Task 7
 
+    /**
+     * perfectMatches (aFileName, th) : takes g, t from a input file and th as parameter and returns
+     * all the indices that correspond to beginning of perfect matches between an element of Sg and
+     * a subword of t.
+     */
     public static Set<Integer> perfectMatches (String aFileName, float th) throws IOException {
         List<String> lines = readFiles(aFileName);
 
@@ -60,20 +65,10 @@ public class Blast {
         return result;
     }
 
-    // Task 8
-
-    public static Set<Triple<Integer, Integer, Float>> highScoreAlignments (String aFileName, float th, float thl) throws IOException {
-        List<String> lines = readFiles(aFileName);
-
-        if (lines.size() != 2)
-            throw new java.lang.IllegalArgumentException();
-
-        String g = lines.get(0);
-        String t = lines.get(1);
-
-        return null;
-    }
-
+    /**
+     * coupleScoreMatrix (g, t) : returns the Blosum50 score of all possible couples between a letter
+     * of g and a letter of t.
+     */
     private static float[][] coupleScoreMatrix (String g, String t) {
         float[][] result = new float[g.length()][t.length()];
 
@@ -84,6 +79,10 @@ public class Blast {
         return result;
     }
 
+    /**
+     * wordScore (oupleScore, i, j, k) : returns the Blosum50 score of alignment between a k letters
+     * words of g starting at i and a k letters word of t starting at j.
+     */
     private static float wordScore (float[][] coupleScore, int i, int j, int k) {
         if (i + k > coupleScore.length || j + k > coupleScore[0].length)
             throw new java.lang.IllegalArgumentException();
@@ -95,6 +94,10 @@ public class Blast {
         return result;
     }
 
+    /**
+     * wordsScoreMatrix (g, t, k) : returns a matrix with all possible score of alignment between a k
+     * letters word of g and a k letters word of t.
+     */
     private static float[][] wordsScoreMatrix (String g, String t, int k) {
         if (k > g.length() || k > t.length())
             throw new java.lang.IllegalArgumentException();
@@ -119,6 +122,9 @@ public class Blast {
         return indeces;
     }
 
+    /**
+     * highScores (wordsScore, th) : if wordScore[i][j] > th[i], adds (i, j) to the output
+     */
     private static Set<Pair<Integer, Integer>> highScores (float[][] wordsScore, float[] th) {
         HashSet<Pair<Integer, Integer>> indeces = new HashSet<>();
 
@@ -128,6 +134,10 @@ public class Blast {
         return indeces;
     }
 
+    /**
+     * alignScoreTh (g, k, th) : return an array with the Blosum50 alignment score of all k letters
+     * words of the String g with itself times the threshold th.
+     */
     private static float[] alignScoreTh (String g, int k, float th) {
         float[] result = new float[g.length() - k + 1];
 
@@ -141,19 +151,128 @@ public class Blast {
         return result;
     }
 
-    //private static float[][]
+    /**
+     * alignedCouples (g, t, indeces, k) : finds the local alignment of g with t and returns the
+     * Blosum50 scores of all the couples from this alignment. It also returns the index of the k
+     * letters subword match match.
+     */
+    private static Pair<float[], Integer> alignedCouples (String g, String t, Pair<Integer, Integer> indeces, int k) {
+        int indI = indeces.first;
+        int indJ = indeces.second;
 
+        if (indI + k > g.length() || indJ + k > t.length())
+            throw new java.lang.IllegalArgumentException();
+
+        int leftSize = (indI < indJ) ? indI : indJ;
+        int gRightSize = g.length() - indI - k;
+        int tRightSize = t.length() - indJ - k;
+        int rightSize = (gRightSize < tRightSize) ? gRightSize  : tRightSize;
+
+        float[] result = new float [leftSize + k + rightSize];
+
+        for (int l = 0; l < leftSize; l ++)
+            result[l] = Blosum50.getScore(g.charAt(indI - leftSize + l), t.charAt(indJ - leftSize + l));
+
+        for (int l = 0; l < k; l ++)
+            result[leftSize + l] = Blosum50.getScore(g.charAt(indI + l), t.charAt(indJ + l));
+
+        for (int l = 0; l < rightSize; l ++)
+            result[leftSize + k + l] = Blosum50.getScore(g.charAt(indI + k + l), t.charAt(indJ + k + l));
+
+        return new Pair(result, leftSize);
+    }
+
+    /**
+     * costMatrix (a, ind, k) : builds a matrix result that stores at result[i][j] the score of
+     * alignment between en extension of the matching by i letters to the left and j letters to
+     * the right. It means that result[0][0] is the score of aligning a seed from g with the k
+     * letters subword from t that matches this seed.
+     */
+    private static float[][] costMatrix (float[] a, int ind, int k) {
+        if (k <= 0)
+            throw new java.lang.IllegalArgumentException();
+
+        float[][] result = new float [ind + 1][a.length - ind - k + 1];
+
+        result[0][0] = 0;
+        for (int l = 0; l < k; l ++)
+            result[0][0] += a[ind + l];
+
+        for (int l = 1; l < ind + 1; l ++)
+            result[l][0] += result[l - 1][0] + a[ind - l];
+
+        for (int l = 1; l < a.length - ind - k + 1; l ++)
+            result[0][l] += result[0][l - 1] + a[ind + k - 1 + l];
+
+        for (int i = 1; i < ind + 1; i++)
+            for (int j = 1; j < a.length - ind - k + 1; j++)
+                result[i][j] += result[i - 1][j] + a[ind - i];
+
+        return result;
+    }
+
+    /**
+     * findMaxIndeces (scores, th) : finds i and j in the double array scores that maximizes the
+     * sum i + j and satisfies scores[i][j] >= th.
+     */
     private static Triple<Integer, Integer, Float> findMaxIndeces (float[][] scores, float th) {
+        if(scores.length < 1 || scores[0].length < 1)
+            throw new java.lang.IllegalArgumentException();
 
-        Triple<Integer, Integer, Float> result = new Triple<>(-1, -1, 0F);
+        Triple<Integer, Integer, Float> result = new Triple<>(0, 0, scores[0][0]);
 
         for (int i = 0; i < scores.length; i ++)
             for (int j = 0; j < scores[0].length; j++)
-                if (scores[i][j] > th && i + j > result.first + result.second) {
+                if (scores[i][j] >= th && i + j > result.first + result.second) {
                     result.first = i;
                     result.second = j;
                     result.third = scores[i][j];
                 }
+
+        return result;
+    }
+
+    // Task 8
+
+    /**
+     * highScoreAlignments (aFileName, th, thl) : takes g, t, from a input file, th and th` as parameters
+     * and returns all the local alignments with sufficiently high scores.
+     */
+    public static Set<Triple<Integer, Integer, Float>> highScoreAlignments (String aFileName, float th, float thl) throws IOException {
+        List<String> lines = readFiles(aFileName);
+
+        if (lines.size() != 2)
+            throw new java.lang.IllegalArgumentException();
+
+        String g = lines.get(0);
+        String t = lines.get(1);
+
+        int k = 4;
+
+        float[][] scoreMatrix = wordsScoreMatrix (g, t, k);
+        float[] threshold = alignScoreTh (g, k, th);
+        Set<Pair<Integer, Integer>> set = highScores (scoreMatrix, threshold);
+
+        Set<Triple<Integer, Integer, Float>> result = new HashSet<>();
+        float gScoreTh = Computation.blosum50Score(g, g) * thl;
+
+        for (Pair<Integer, Integer> indeces : set) {
+            int gIndex = indeces.first;
+            int tIndex = indeces.second;
+
+            Pair<float[], Integer> pair = alignedCouples (g, t, indeces, k);
+            float[] alignedCouplesScores = pair.first;
+            int matchIndex = pair.second;
+            float[][] matrix = costMatrix(alignedCouplesScores, matchIndex, k);
+
+            Triple<Integer, Integer, Float> triple = findMaxIndeces(matrix, gScoreTh);
+            int leftExtension = triple.first;
+            int rightExtension = triple.second;
+            float score = triple.third;
+            result.add(new Triple (tIndex - leftExtension, k + leftExtension + rightExtension, score));
+
+            Display.printIntermediateBlastResults(gIndex, tIndex, leftExtension, rightExtension, score);
+        }
 
         return result;
     }

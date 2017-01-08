@@ -2,6 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3fb614b-1f4d-452e-9cc8-27d33741d521" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Computation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/Alignment.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/Alignment.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/Blast$Triple.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/Blast$Triple.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/Blast.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/Blast.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/Display.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/Display.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/TestAlignment.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/TestAlignment.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/sequence-alignment/TestBlast.class" afterPath="$PROJECT_DIR$/out/production/sequence-alignment/TestBlast.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Alignment.java" afterPath="$PROJECT_DIR$/src/Alignment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Blast.java" afterPath="$PROJECT_DIR$/src/Blast.java" />
@@ -9,6 +16,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/LocalAlignment.java" afterPath="$PROJECT_DIR$/src/LocalAlignment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TestAlignment.java" afterPath="$PROJECT_DIR$/src/TestAlignment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TestBlast.java" afterPath="$PROJECT_DIR$/src/TestBlast.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TestLocalAlignment.java" afterPath="$PROJECT_DIR$/src/TestLocalAlignment.java" />
     </list>
     <ignored path="DNA-project-java.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,11 +38,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Alignment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Alignment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Alignment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="207" column="10" selection-start-line="207" selection-start-column="10" selection-end-line="207" selection-end-column="10" />
+            <state relative-caret-position="1888">
+              <caret line="417" column="7" selection-start-line="417" selection-start-column="7" selection-end-line="417" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -42,11 +50,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Computation.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Computation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="373">
+              <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="TestAlignment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TestAlignment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-255">
-              <caret line="21" column="41" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
+            <state relative-caret-position="520">
+              <caret line="57" column="41" selection-start-line="57" selection-start-column="41" selection-end-line="57" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -55,8 +73,8 @@
       <file leaf-file-name="LocalAlignment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/LocalAlignment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="928">
-              <caret line="103" column="8" selection-start-line="103" selection-start-column="8" selection-end-line="110" selection-end-column="31" />
+            <state relative-caret-position="430">
+              <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -64,20 +82,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestLocalAlignment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/TestLocalAlignment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="198" selection-start-line="13" selection-start-column="198" selection-end-line="13" selection-end-column="198" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Edition.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Edition.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1411">
+            <state relative-caret-position="339">
               <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -89,8 +97,8 @@
       <file leaf-file-name="Blast.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Blast.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="143" column="6" selection-start-line="143" selection-start-column="6" selection-end-line="143" selection-end-column="6" />
+            <state relative-caret-position="400">
+              <caret line="256" column="50" selection-start-line="256" selection-start-column="50" selection-end-line="256" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -98,11 +106,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestBlast.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TestBlast.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TestBlast.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="35" column="50" selection-start-line="35" selection-start-column="50" selection-end-line="35" selection-end-column="50" />
+            <state relative-caret-position="272">
+              <caret line="16" column="53" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -113,18 +121,28 @@
       <file leaf-file-name="Display.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Display.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="64" column="131" selection-start-line="64" selection-start-column="131" selection-end-line="64" selection-end-column="131" />
+            <state relative-caret-position="252">
+              <caret line="71" column="97" selection-start-line="71" selection-start-column="97" selection-end-line="71" selection-end-column="97" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Blosum50.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Blosum50.java">
+      <file leaf-file-name="TestLocalAlignment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/TestLocalAlignment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="16" column="64" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="64" />
+            <state relative-caret-position="153">
+              <caret line="9" column="100" selection-start-line="9" selection-start-column="100" selection-end-line="9" selection-end-column="100" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestEdition.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/TestEdition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -162,12 +180,13 @@
         <option value="$PROJECT_DIR$/src/TestEdition.java" />
         <option value="$PROJECT_DIR$/src/Edition.java" />
         <option value="$PROJECT_DIR$/LocSeq_Res6.txt" />
-        <option value="$PROJECT_DIR$/src/TestLocalAlignment.java" />
-        <option value="$PROJECT_DIR$/src/LocalAlignment.java" />
-        <option value="$PROJECT_DIR$/src/TestAlignment.java" />
         <option value="$PROJECT_DIR$/src/TestBlast.java" />
-        <option value="$PROJECT_DIR$/src/Display.java" />
+        <option value="$PROJECT_DIR$/src/TestAlignment.java" />
+        <option value="$PROJECT_DIR$/src/Computation.java" />
         <option value="$PROJECT_DIR$/src/Blast.java" />
+        <option value="$PROJECT_DIR$/src/Display.java" />
+        <option value="$PROJECT_DIR$/src/LocalAlignment.java" />
+        <option value="$PROJECT_DIR$/src/TestLocalAlignment.java" />
         <option value="$PROJECT_DIR$/src/Alignment.java" />
       </list>
     </option>
@@ -265,7 +284,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files (x86)\nodejs\node.exe" />
   </component>
-  <component name="RunManager" selected="Application.TestAlignment">
+  <component name="RunManager" selected="Application.TestBlast">
     <configuration default="false" name="TestSubsequence" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="TestSubsequence" />
@@ -825,10 +844,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.TestAlignment" />
-        <item index="1" class="java.lang.String" itemvalue="Application.TestBlast" />
-        <item index="2" class="java.lang.String" itemvalue="Application.TestLocalAlignment" />
-        <item index="3" class="java.lang.String" itemvalue="Application.TestEdition" />
+        <item index="0" class="java.lang.String" itemvalue="Application.TestBlast" />
+        <item index="1" class="java.lang.String" itemvalue="Application.TestLocalAlignment" />
+        <item index="2" class="java.lang.String" itemvalue="Application.TestEdition" />
+        <item index="3" class="java.lang.String" itemvalue="Application.TestAlignment" />
         <item index="4" class="java.lang.String" itemvalue="Application.TestSubsequence" />
       </list>
     </recent_temporary>
@@ -851,12 +870,12 @@
       <workItem from="1483196512206" duration="1980000" />
       <workItem from="1483540131534" duration="9662000" />
       <workItem from="1483657608137" duration="15968000" />
-      <workItem from="1483719317713" duration="62470000" />
+      <workItem from="1483719317713" duration="78416000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90080000" />
+    <option name="totallyTimeSpent" value="106026000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -870,8 +889,8 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37378114" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28494042" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46695557" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4907909" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17430703" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1051,14 +1070,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Subsequence.java" />
     <entry file="file://$PROJECT_DIR$/src/TestSubsequence.java" />
-    <entry file="file://$PROJECT_DIR$/src/TestEdition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LocSeq_Res6.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -1083,16 +1094,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Edition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Blosum50.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -1101,44 +1102,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TestBlast.java">
+    <entry file="file://$PROJECT_DIR$/src/Computation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="50" selection-start-line="35" selection-start-column="50" selection-end-line="35" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TestLocalAlignment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="198" selection-start-line="13" selection-start-column="198" selection-end-line="13" selection-end-column="198" />
+        <state relative-caret-position="373">
+          <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TestAlignment.java">
+    <entry file="file://$PROJECT_DIR$/src/Edition.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="21" column="41" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Display.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="64" column="131" selection-start-line="64" selection-start-column="131" selection-end-line="64" selection-end-column="131" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/LocalAlignment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="928">
-          <caret line="103" column="8" selection-start-line="103" selection-start-column="8" selection-end-line="110" selection-end-column="31" />
+        <state relative-caret-position="339">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1147,18 +1122,70 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Blast.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="143" column="6" selection-start-line="143" selection-start-column="6" selection-end-line="143" selection-end-column="6" />
+        <state relative-caret-position="400">
+          <caret line="256" column="50" selection-start-line="256" selection-start-column="50" selection-end-line="256" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/TestLocalAlignment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="100" selection-start-line="9" selection-start-column="100" selection-end-line="9" selection-end-column="100" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Alignment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="207" column="10" selection-start-line="207" selection-start-column="10" selection-end-line="207" selection-end-column="10" />
+        <state relative-caret-position="1888">
+          <caret line="417" column="7" selection-start-line="417" selection-start-column="7" selection-end-line="417" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TestAlignment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="57" column="41" selection-start-line="57" selection-start-column="41" selection-end-line="57" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TestEdition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Display.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="71" column="97" selection-start-line="71" selection-start-column="97" selection-end-line="71" selection-end-column="97" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/LocalAlignment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TestBlast.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="53" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

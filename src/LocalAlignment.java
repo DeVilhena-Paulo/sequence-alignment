@@ -57,7 +57,7 @@ public class LocalAlignment {
                 float gapPenalty = openCost;
                 float hyphenCouplesScore = 0;
                 for (int k = 1; k < i; k++) {
-                    hyphenCouplesScore += Blosum50.getScore(s.charAt(i - 1 - k), '-'); // contribution of couples with one hyphen to the gap penalty
+                    //hyphenCouplesScore += Blosum50.getScore(s.charAt(i - 1 - k), '-'); // contribution of couples with one hyphen to the gap penalty
                     gapPenalty += increaseCost;
                     if (H[i - k][j] + hyphenCouplesScore - gapPenalty > deletionScore)
                         deletionScore = H[i - k][j] + hyphenCouplesScore - gapPenalty;
@@ -67,7 +67,7 @@ public class LocalAlignment {
                 hyphenCouplesScore = 0;
                 gapPenalty = openCost;
                 for (int k = 1; k < j; k++) {
-                    hyphenCouplesScore += Blosum50.getScore(t.charAt(j - 1 - k), '-'); // contribution of couples with one hyphen to the gap penalty
+                    //hyphenCouplesScore += Blosum50.getScore(t.charAt(j - 1 - k), '-'); // contribution of couples with one hyphen to the gap penalty
                     gapPenalty += increaseCost;
                     if (H[i][j - k] + hyphenCouplesScore - gapPenalty > insertionScore)
                         insertionScore = H[i][j - k] + hyphenCouplesScore - gapPenalty;

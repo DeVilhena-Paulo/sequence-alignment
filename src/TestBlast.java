@@ -13,6 +13,14 @@ public class TestBlast {
             System.out.println (aFileName + " : FAILED");
     }
 
+    private static void localAlignTest (String aFileName, float th, float thl) throws IOException {
+        System.out.println ("\n" + aFileName + " :");
+        Set<Blast.Triple<Integer, Integer, Float>> result = Blast.highScoreAlignments(aFileName, th, thl);
+        for (Blast.Triple<Integer, Integer, Float> triple : result) {
+            System.out.println("index: " + triple.first + "; length: " + triple.second + "; score: " + triple.third + ";");
+        }
+    }
+
     public static void main (String[] args) throws IOException {
         // perfectMatches
         System.out.println ("Testing Blast.perfectMatches method...");
@@ -34,6 +42,18 @@ public class TestBlast {
         target = new HashSet<>();
         target.add (5); target.add (50);
         blastTest ("Blast_Test3.txt", target, 0.88f);
+
+        // highScoreAlignments
+        System.out.println ("\nTesting Blast.highScoreAlignments method...");
+
+        //Test 1
+        localAlignTest("Blast_Test1.txt", 0.9f, 0.1f);
+
+        //Test 2
+        localAlignTest("Blast_Test2.txt", 0.9f, 0.1f);
+
+        //Test 3
+        localAlignTest("Blast_Test3.txt", 0.88f, 0.1f);
     }
 
 }
