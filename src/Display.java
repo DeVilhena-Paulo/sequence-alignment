@@ -1,10 +1,7 @@
 
 public class Display {
 
-    /**
-     * printAlignment (s, t): displays nicely one optimal alignment between sequences s and t
-     */
-    public static void printAlignment (String s, String t) {
+    private static String alignDisplay (String s, String t) {
         int n = s.length();
         int m = t.length();
 
@@ -13,23 +10,15 @@ public class Display {
             throw new java.lang.IllegalArgumentException();
         }
 
-        StringBuilder alignDisplay = new StringBuilder();
-        StringBuilder optimalAlignment = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < n; i++) {
-
-            if (s.charAt(i) == t.charAt(i)) {
-                alignDisplay.append('|');
-                optimalAlignment.append(s.charAt(i));
-            }
+            if (s.charAt(i) == t.charAt(i))
+                result.append('|');
             else
-                alignDisplay.append(' ');
+                result.append(' ');
         }
 
-        System.out.println (s);
-        System.out.println (alignDisplay.toString());
-        System.out.println (t);
-        String aux = optimalAlignment.toString();
-        System.out.println ("Optimal alignment : " + aux + "; Size : " + aux.length());
+        return result.toString();
     }
 
     public static String computeAlignmentSeq (String s, String t) {
@@ -52,6 +41,17 @@ public class Display {
         return optimalAlignment.toString();
     }
 
+    /**
+     * printAlignment (s, t): displays nicely one optimal alignment between sequences s and t
+     */
+    public static void printAlignment (String s, String t) {
+        System.out.println (s);
+        System.out.println (alignDisplay(s, t));
+        System.out.println (t);
+        String aux = computeAlignmentSeq(s, t);
+        System.out.println ("Optimal alignment : " + aux + "; Size : " + aux.length());
+    }
+
     public static void printScore (String s, String t) {
         System.out.println(s);
         System.out.println(t);
@@ -62,5 +62,12 @@ public class Display {
         System.out.println(s);
         System.out.println(t);
         System.out.println("Score of alignment with affine penalty: " + Alignment.computeScoreBlosum50(s, t, openCost, increaseCost) + "\n");
+    }
+
+    public static void printLocal (String s, String t, float openCost, float increaseCost) {
+        System.out.println (s);
+        System.out.println (alignDisplay(s, t));
+        System.out.println (t);
+        System.out.println("Score of alignment with affine penalty: " + Alignment.computeScoreBlosum50(s, t, openCost, increaseCost) + " ; size: " + s.length() + "\n");
     }
 }

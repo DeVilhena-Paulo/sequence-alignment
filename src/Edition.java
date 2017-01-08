@@ -74,7 +74,7 @@ public class Edition {
         String t = lines.get(1);
         int[][] path = distance(s, t);
 
-        List<String> editedSeqs = Alignment.backtracking(s, t, path);
+        List<String> editedSeqs = Alignment.traceBack(s, t, path);
 
         if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();

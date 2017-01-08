@@ -96,10 +96,10 @@ public class Alignment {
     }
 
     /**
-     * backtracking : does the backtracking of the array path to reconstruct one optimal
+     * traceBack : does the traceBack of the array path to reconstruct one optimal
      * alignment between the sequences s and t
      */
-    public static List<String> backtracking (String s, String t, int[][] path) {
+    public static List<String> traceBack (String s, String t, int[][] path) {
         int n = s.length();
         int m = t.length();
 
@@ -220,7 +220,7 @@ public class Alignment {
         String t = lines.get(1);
         int[][] path = scoreBlosum50(s, t, 0, 0);
 
-        List<String> editedSeqs = backtracking(s, t, path);
+        List<String> editedSeqs = traceBack(s, t, path);
 
         if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();
@@ -248,7 +248,7 @@ public class Alignment {
         String t = lines.get(1);
         int[][] path = scoreBlosum50(s, t, openCost, increaseCost);
 
-        List<String> editedSeqs = backtracking(s, t, path);
+        List<String> editedSeqs = traceBack(s, t, path);
 
         if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();
@@ -327,37 +327,6 @@ public class Alignment {
             score += Blosum50.getScore(s.charAt(i), t.charAt(i));
 
         return score;
-    }
-
-    /**
-     * optimalLocal (s, t, openCost, increaseCost) : this method computes the optimal local alignment between
-     * two sequences of letters, s and t, using dynamic programming (Smith-Waterman Algorithm). The array H
-     * stores at H[i][j] the maximum score of the alignment so far and the array path encodes at path[i][j] the
-     * choices taken.
-     */
-
-    private static List<float[][]> optimalLocal (String s, String t, float openCost, float increaseCost) {
-        return null;
-    }
-
-    /**
-     * backtracking (s, t, score, path) : does the backtracking of the array path to reconstruct one optimal
-     * local alignment between the sequences s and t.
-     */
-    private static List<String> backtracking (String s, String t, float[][] score, float[][] path){
-        return null;
-    }
-
-
-    //Task 6
-
-    /**
-     * optimalLocal (aFileName, openCost, increaseCost) : this method computes/displays one optimal local
-     * alignment between two sequences of amino acids given in a input file using the Blosum50 matrix and
-     * with affine gap penalty.
-     */
-    public static void optimalLocal (String aFileName, float openCost, float increaseCost) throws IOException {
-
     }
 
 }
