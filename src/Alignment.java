@@ -163,9 +163,11 @@ public class Alignment {
         S[0][0] = 0F;
 
         for (int i = 1; i < n + 1; i++)
+            //S[i][0] = 0;
             S[i][0] = S[i-1][0] + Blosum50.getScore(s.charAt(i - 1), '-'); // deletion of i_th character from s
 
         for (int j = 1; j < m + 1; j++)
+            //S[0][j] = 0;
             S[0][j] = S[0][j-1] + Blosum50.getScore(t.charAt(j - 1), '-'); // insertion of j_th character from t in s
 
         for (int i = 1; i < n + 1; i++) {
@@ -174,16 +176,18 @@ public class Alignment {
                 float alignScore = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
 
                 float deletionScore = S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-');
+                //float deletionScore = S[i - 1][j];
                 if (j != m) { // if I'm opening a gap in the end of the sequence t, the penalty does not count
                     deletionScore -= increaseCost;
-                    if (i == 1 || path[i - 1][j] == 0)
+                    if (i == 1 || path[i - 1][j] != 1)
                         deletionScore -= openCost;
                 }
 
                 float insertionScore = S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-');
+                //float insertionScore = S[i][j - 1];
                 if (i != n) { // if I'm opening a gap in the end of the sequence s, the penalty does not count
                     insertionScore -= increaseCost;
-                    if (j == 1 || path[i][j - 1] == 0)
+                    if (j == 1 || path[i][j - 1] != 2)
                         insertionScore -= openCost;
                 }
 
@@ -201,6 +205,7 @@ public class Alignment {
                 }
             }
         }
+        //System.out.println("Affine penalty = " + S[n][m]);
         return path;
     }
 
@@ -300,7 +305,6 @@ public class Alignment {
                 tOpen = false;
             }
             if (tOpen) tAux += increaseCost;
-
 
             score += Blosum50.getScore(s.charAt(i), t.charAt(i));
         }

@@ -36,6 +36,9 @@ public class TestAlignment {
         //Test 3
         Alignment.scoreBlosum50("OptSeq_Res13.txt");
 
+        //Test 4
+        Alignment.scoreBlosum50("OptSeq_Res.txt");
+
         // affinePenalty
         System.out.println ("Testing Alignment.affinePenalty method...");
 
@@ -47,6 +50,9 @@ public class TestAlignment {
 
         //Test 3
         Alignment.affinePenalty("OptSeq_Res13.txt", 10, 1);
+
+        //Test 4
+        Alignment.affinePenalty("OptSeq_Res.txt", 10, 1);
 
     }
 }

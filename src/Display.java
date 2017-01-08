@@ -56,6 +56,7 @@ public class Display {
         System.out.println(s);
         System.out.println(t);
         System.out.println("Score of alignment : " + Alignment.computeScoreBlosum50(s, t) + "\n");
+        System.out.println("Score of alignment with affine penalty: " + Alignment.computeScoreBlosum50(s, t, 10, 1) + "\n");
     }
 
     public static void printAffineScore (String s, String t, float openCost, float increaseCost) {
