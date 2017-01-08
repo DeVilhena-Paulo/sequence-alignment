@@ -6,9 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * Created by Paulo on 07/01/2017.
- */
 public class LocalAlignment {
 
     final static Charset ENCODING = StandardCharsets.UTF_8;
@@ -54,23 +51,17 @@ public class LocalAlignment {
                 float alignScore = H[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
 
                 float deletionScore = 0;
-                float gapPenalty = openCost;
-                float hyphenCouplesScore = 0;
-                for (int k = 1; k < i; k++) {
-                    //hyphenCouplesScore += Blosum50.getScore(s.charAt(i - 1 - k), '-'); // contribution of couples with one hyphen to the gap penalty
-                    gapPenalty += increaseCost;
-                    if (H[i - k][j] + hyphenCouplesScore - gapPenalty > deletionScore)
-                        deletionScore = H[i - k][j] + hyphenCouplesScore - gapPenalty;
+                for (int k = 1; k <= i; k++) {
+                    float gapPenalty = openCost + k*increaseCost;
+                    if (H[i - k][j] - gapPenalty > deletionScore)
+                        deletionScore = H[i - k][j] - gapPenalty;
                 }
 
                 float insertionScore = 0;
-                hyphenCouplesScore = 0;
-                gapPenalty = openCost;
-                for (int k = 1; k < j; k++) {
-                    //hyphenCouplesScore += Blosum50.getScore(t.charAt(j - 1 - k), '-'); // contribution of couples with one hyphen to the gap penalty
-                    gapPenalty += increaseCost;
-                    if (H[i][j - k] + hyphenCouplesScore - gapPenalty > insertionScore)
-                        insertionScore = H[i][j - k] + hyphenCouplesScore - gapPenalty;
+                for (int k = 1; k <= j; k++) {
+                    float gapPenalty = openCost + k*increaseCost;
+                    if (H[i][j - k] - gapPenalty > insertionScore)
+                        insertionScore = H[i][j - k] - gapPenalty;
                 }
 
                 H[i][j] = 0;
@@ -139,7 +130,7 @@ public class LocalAlignment {
         StringBuilder tLocal = new StringBuilder();
 
 
-        while (H[i][j] != 0) {
+        while (H[i][j] != 0 && path[i][j] != -1) {
             if (path[i][j] == 0) {
                 sLocal.append(s.charAt(i-1));
                 tLocal.append(t.charAt(j-1));

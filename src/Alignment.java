@@ -154,7 +154,76 @@ public class Alignment {
      * alignment between the first i characters of the string s to the first j characters of the string t, being
      * able to manage the memoization process.
      */
-    private static int[][] scoreBlosum50 (String s, String t, float openCost, float increaseCost) {
+    private static int[][] maxinizeBlosum50Score  (String s, String t) {
+        int n = s.length();
+        int m = t.length();
+        float[][] S = new float [n + 1][m + 1];
+        int[][] path = new int [n + 1][m + 1];
+
+        S[0][0] = 0F;
+
+        for (int i = 1; i < n + 1; i++)
+            S[i][0] = S[i-1][0] + Blosum50.getScore(s.charAt(i - 1), '-'); // deletion of i_th character from s
+
+        for (int j = 1; j < m + 1; j++)
+            S[0][j] = S[0][j-1] + Blosum50.getScore(t.charAt(j - 1), '-'); // insertion of j_th character from t in s
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+
+                float alignScore = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
+
+                float deletionScore = S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-');
+
+                float insertionScore = S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-');
+
+                S[i][j] = alignScore;
+                path[i][j] = 0;
+
+                if (deletionScore > S[i][j]) {
+                    S[i][j] = deletionScore;
+                    path[i][j] = 1;
+                }
+
+                if (insertionScore > S[i][j]) {
+                    S[i][j] = insertionScore;
+                    path[i][j] = 2;
+                }
+            }
+        }
+
+        return path;
+    }
+
+
+    // Task 4
+
+    /**
+     * scoreBlosum50 (aFileName) : this methods computes and displays one optimal alignment between two
+     * sequences of amino acids given in a input file using the Blosum50 matrix.
+     */
+    public static void maxinizeBlosum50Score (String aFileName) throws IOException {
+        List<String> lines = readFiles(aFileName);
+
+        if (lines.size() != 2)
+            throw new java.lang.IllegalArgumentException();
+
+        String s = lines.get(0);
+        String t = lines.get(1);
+        int[][] path = maxinizeBlosum50Score (s, t);
+
+        List<String> editedSeqs = traceBack(s, t, path);
+
+        if (editedSeqs.size() != 2)
+            throw new java.lang.IllegalArgumentException();
+
+        String sEdition = editedSeqs.get(0);
+        String tEdition = editedSeqs.get(1);
+
+        Display.printBlosum50Score(sEdition, tEdition);
+    }
+
+    private static int[][] maxinizeBlosum50Score  (String s, String t, float openCost, float increaseCost) {
         int n = s.length();
         int m = t.length();
         float[][] S = new float [n + 1][m + 1];
@@ -209,33 +278,6 @@ public class Alignment {
         return path;
     }
 
-    // Task 4
-
-    /**
-     * scoreBlosum50 (aFileName) : this methods computes and displays one optimal alignment between two
-     * sequences of amino acids given in a input file using the Blosum50 matrix.
-     */
-    public static void scoreBlosum50 (String aFileName) throws IOException {
-        List<String> lines = readFiles(aFileName);
-
-        if (lines.size() != 2)
-            throw new java.lang.IllegalArgumentException();
-
-        String s = lines.get(0);
-        String t = lines.get(1);
-        int[][] path = scoreBlosum50(s, t, 0, 0);
-
-        List<String> editedSeqs = traceBack(s, t, path);
-
-        if (editedSeqs.size() != 2)
-            throw new java.lang.IllegalArgumentException();
-
-        String sEdition = editedSeqs.get(0);
-        String tEdition = editedSeqs.get(1);
-
-        Display.printScore(sEdition, tEdition);
-    }
-
     // Task 5
 
     /**
@@ -251,7 +293,7 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
-        int[][] path = scoreBlosum50(s, t, openCost, increaseCost);
+        int[][] path = maxinizeBlosum50Score (s, t, openCost, increaseCost);
 
         List<String> editedSeqs = traceBack(s, t, path);
 
@@ -263,158 +305,5 @@ public class Alignment {
 
         Display.printAffineScore(sEdition, tEdition, openCost, increaseCost);
     }
-
-    /**
-     * computeScoreBlosum50 (s, t, openCost, increaseCost) : this method computes the score of the alignment
-     * of s and t using the Blosum 50 as the substitution matrix. It takes into account the gap penalties
-     */
-    /*public static float computeScoreBlosum50 (String s, String t, float openCost, float increaseCost) {
-        int n = s.length();
-        int m = t.length();
-
-        if (n != m) {
-            System.out.println ("Error: string sizes do not match");
-            throw new java.lang.IllegalArgumentException();
-        }
-
-        float score = 0F;
-        float penalty = 0F;
-        float sAux = 0F;
-        float tAux = 0F;
-        boolean sOpen = false;
-        boolean tOpen = false;
-        if (n > 0)
-            score += Blosum50.getScore(s.charAt(0), t.charAt(0));
-        for (int i = 1; i < n; i++) {
-            if (s.charAt(i - 1) != '-' && s.charAt(i) == '-') {
-                sOpen = true;
-                sAux = openCost;
-            }
-            else if (s.charAt(i - 1) == '-' && s.charAt(i) != '-') {
-                penalty += sAux;
-                sOpen = false;
-            }
-            if (sOpen) sAux += increaseCost;
-
-            if (t.charAt(i - 1) != '-' && t.charAt(i) == '-') {
-                tOpen = true;
-                tAux = openCost;
-            }
-            else if (t.charAt(i - 1) == '-' && t.charAt(i) != '-') {
-                penalty += tAux;
-                tOpen = false;
-            }
-            if (tOpen) tAux += increaseCost;
-
-            score += Blosum50.getScore(s.charAt(i), t.charAt(i));
-        }
-        score -= penalty;
-
-        return score;
-    }*/
-
-    /**
-     * computeScoreBlosum50 (s, t, openCost, increaseCost) : this method computes the score of the alignment of
-     * s and t using the Blosum 50 as the substitution matrix. It does not take into account the gap penalties
-     */
-    /*public static float computeScoreBlosum50 (String s, String t) {
-        int n = s.length();
-        int m = t.length();
-
-        if (n != m) {
-            System.out.println ("Error: string sizes do not match");
-            throw new java.lang.IllegalArgumentException();
-        }
-
-        float score = 0F;
-        for (int i = 0; i < n; i++)
-            score += Blosum50.getScore(s.charAt(i), t.charAt(i));
-
-        return score;
-    }*/
-
-    /**
-     * computeScoreBlosum50 (s, t, openCost, increaseCost) : this method computes the score of the alignment of
-     * s and t using the Blosum 50 as the substitution matrix. It does not take into account the gap penalties
-     */
-    /*public static float computeScoreBlosum50 (String s, String t, float openCost, float increaseCost) {
-        int n = s.length();
-        int m = t.length();
-
-        if (n != m) {
-            System.out.println ("Error: string sizes do not match");
-            throw new java.lang.IllegalArgumentException();
-        }
-
-        float score = 0F;
-        for (int i = 0; i < n; i++)
-            if (s.charAt(i) != '-' && t.charAt(i) != '-')
-                score += Blosum50.getScore(s.charAt(i), t.charAt(i));
-
-        score -= computeGapPenalty(s, t, openCost, increaseCost);
-
-        return score;
-    }
-
-    private static float computeHyphenScore (String s, String t) {
-        int n = s.length();
-        int m = t.length();
-
-        if (n != m) {
-            System.out.println ("Error: string sizes do not match");
-            throw new java.lang.IllegalArgumentException();
-        }
-
-        float score = 0F;
-        for (int i = 0; i < n; i++)
-            if (s.charAt(i) == '-' || t.charAt(i) == '-')
-                score += Blosum50.getScore(s.charAt(i), t.charAt(i));
-
-        return score;
-    }*/
-
-    /**
-     * computeScoreBlosum50 (s, t, openCost, increaseCost) : this method computes the score of the alignment of
-     * s and t using the Blosum 50 as the substitution matrix. It does not take into account the gap penalties
-     */
-    /*private static float computeGapPenalty (String s, String t, float openCost, float increaseCost) {
-        int n = s.length();
-        int m = t.length();
-
-        if (n != m) {
-            System.out.println ("Error: string sizes do not match");
-            throw new java.lang.IllegalArgumentException();
-        }
-
-        float penalty = 0F;
-        float sAux = 0F;
-        float tAux = 0F;
-        boolean sOpen = false;
-        boolean tOpen = false;
-
-        for (int i = 1; i < n; i++) {
-            if (s.charAt(i - 1) != '-' && s.charAt(i) == '-') {
-                sOpen = true;
-                sAux = openCost;
-            }
-            else if (s.charAt(i - 1) == '-' && s.charAt(i) != '-') {
-                penalty += sAux;
-                sOpen = false;
-            }
-            if (sOpen) sAux += increaseCost;
-
-            if (t.charAt(i - 1) != '-' && t.charAt(i) == '-') {
-                tOpen = true;
-                tAux = openCost;
-            }
-            else if (t.charAt(i - 1) == '-' && t.charAt(i) != '-') {
-                penalty += tAux;
-                tOpen = false;
-            }
-            if (tOpen) tAux += increaseCost;
-        }
-
-        return penalty;
-    }*/
 
 }

@@ -113,25 +113,25 @@ public class Blast {
     }
 
     private static Set<Pair<Integer, Integer>> highScores (float[] scores, float th, int i) {
-        HashSet<Pair<Integer, Integer>> indeces = new HashSet<>();
+        HashSet<Pair<Integer, Integer>> indices = new HashSet<>();
 
         for (int j = 0; j < scores.length; j ++)
             if (scores[j] >= th)
-                indeces.add(new Pair (i, j));
+                indices.add(new Pair (i, j));
 
-        return indeces;
+        return indices;
     }
 
     /**
      * highScores (wordsScore, th) : if wordScore[i][j] > th[i], adds (i, j) to the output
      */
     private static Set<Pair<Integer, Integer>> highScores (float[][] wordsScore, float[] th) {
-        HashSet<Pair<Integer, Integer>> indeces = new HashSet<>();
+        HashSet<Pair<Integer, Integer>> indices = new HashSet<>();
 
         for (int i = 0; i < wordsScore.length; i ++)
-            indeces.addAll(highScores(wordsScore[i], th[i], i));
+            indices.addAll(highScores(wordsScore[i], th[i], i));
 
-        return indeces;
+        return indices;
     }
 
     /**
@@ -152,13 +152,13 @@ public class Blast {
     }
 
     /**
-     * alignedCouples (g, t, indeces, k) : finds the local alignment of g with t and returns the
+     * alignedCouples (g, t, indices, k) : finds the local alignment of g with t and returns the
      * Blosum50 scores of all the couples from this alignment. It also returns the index of the k
      * letters subword match match.
      */
-    private static Pair<float[], Integer> alignedCouples (String g, String t, Pair<Integer, Integer> indeces, int k) {
-        int indI = indeces.first;
-        int indJ = indeces.second;
+    private static Pair<float[], Integer> alignedCouples (String g, String t, Pair<Integer, Integer> indices, int k) {
+        int indI = indices.first;
+        int indJ = indices.second;
 
         if (indI + k > g.length() || indJ + k > t.length())
             throw new java.lang.IllegalArgumentException();
@@ -212,23 +212,27 @@ public class Blast {
     }
 
     /**
-     * findMaxIndeces (scores, th) : finds i and j in the double array scores that maximizes the
+     * findMaxindices (scores, th) : finds i and j in the double array scores that maximizes the
      * sum i + j and satisfies scores[i][j] >= th.
      */
-    private static Triple<Integer, Integer, Float> findMaxIndeces (float[][] scores, float th) {
+    private static Triple<Integer, Integer, Float> findMaxindices (float[][] scores, float th) {
         if(scores.length < 1 || scores[0].length < 1)
             throw new java.lang.IllegalArgumentException();
 
-        Triple<Integer, Integer, Float> result = new Triple<>(0, 0, scores[0][0]);
-
+        int indI = 0;
+        int indJ = 0;
+        float score = scores[0][0];
         for (int i = 0; i < scores.length; i ++)
             for (int j = 0; j < scores[0].length; j++)
-                if (scores[i][j] >= th && i + j > result.first + result.second) {
-                    result.first = i;
-                    result.second = j;
-                    result.third = scores[i][j];
+                if (scores[i][j] >= th && i + j > indI + indJ) {
+                    indI = i;
+                    indJ = j;
+                    score = scores[i][j];
                 }
 
+        Triple<Integer, Integer, Float> result = null;
+        if (score >= th)
+            result = new Triple<>(indI, indJ, score);
         return result;
     }
 
@@ -256,22 +260,23 @@ public class Blast {
         Set<Triple<Integer, Integer, Float>> result = new HashSet<>();
         float gScoreTh = Computation.blosum50Score(g, g) * thl;
 
-        for (Pair<Integer, Integer> indeces : set) {
-            int gIndex = indeces.first;
-            int tIndex = indeces.second;
+        for (Pair<Integer, Integer> indices : set) {
+            int gIndex = indices.first;
+            int tIndex = indices.second;
 
-            Pair<float[], Integer> pair = alignedCouples (g, t, indeces, k);
+            Pair<float[], Integer> pair = alignedCouples (g, t, indices, k);
             float[] alignedCouplesScores = pair.first;
             int matchIndex = pair.second;
             float[][] matrix = costMatrix(alignedCouplesScores, matchIndex, k);
 
-            Triple<Integer, Integer, Float> triple = findMaxIndeces(matrix, gScoreTh);
-            int leftExtension = triple.first;
-            int rightExtension = triple.second;
-            float score = triple.third;
-            result.add(new Triple (tIndex - leftExtension, k + leftExtension + rightExtension, score));
-
-            Display.printIntermediateBlastResults(gIndex, tIndex, leftExtension, rightExtension, score);
+            Triple<Integer, Integer, Float> triple = findMaxindices(matrix, gScoreTh);
+            if (triple != null) {
+                int leftExtension = triple.first;
+                int rightExtension = triple.second;
+                float score = triple.third;
+                result.add(new Triple(tIndex - leftExtension, k + leftExtension + rightExtension, score));
+                Display.printIntermediateBlastResults(gIndex, tIndex, leftExtension, rightExtension, score);
+            }
         }
 
         return result;

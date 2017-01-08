@@ -1,8 +1,10 @@
-/**
- * Created by Paulo on 08/01/2017.
- */
+
 public class Computation {
 
+    /**
+     * computeScoreBlosum50 (s, t, openCost, increaseCost) : this method computes the score of the alignment of
+     * s and t using the Blosum 50 as the substitution matrix. It does not take into account the gap penalties
+     */
     public static float blosum50Score (String s, String t) {
         int n = s.length();
         int m = t.length();
@@ -19,6 +21,10 @@ public class Computation {
         return score;
     }
 
+    /**
+     * blsum50Score (s, t, openCost, increaseCost) : this method computes the score of the alignment
+     * of s and t using the Blosum 50 as the substitution matrix. It takes into account the gap penalties
+     */
     public static float blosum50Score (String s, String t, float openCost, float increaseCost) {
         int n = s.length();
         int m = t.length();
@@ -76,6 +82,26 @@ public class Computation {
         }
 
         return penalty;
+    }
+
+    public static String sequenceAlignment (String s, String t) {
+        int n = s.length();
+        int m = t.length();
+
+        if (n != m) {
+            System.out.println ("Error: string sizes do not match");
+            throw new java.lang.IllegalArgumentException();
+        }
+
+        StringBuilder optimalAlignment = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+
+            if (s.charAt(i) == t.charAt(i))
+                optimalAlignment.append(s.charAt(i));
+
+        }
+
+        return optimalAlignment.toString();
     }
 
 }

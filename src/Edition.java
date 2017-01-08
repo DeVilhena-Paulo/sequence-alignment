@@ -53,6 +53,7 @@ public class Edition {
                     path[i][j] = 2;
                 }
             }
+
         return path;
     }
 
@@ -82,8 +83,8 @@ public class Edition {
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
 
-        Display.printAlignment(sEdition, tEdition);
+        Display.printEditionDistance(sEdition, tEdition);
 
-        return Display.computeAlignmentSeq(sEdition, tEdition);
+        return Computation.sequenceAlignment(sEdition, tEdition);
     }
 }

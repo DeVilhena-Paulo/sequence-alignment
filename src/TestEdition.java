@@ -16,10 +16,8 @@ public class TestEdition {
 
         //Test 1
         distanceEditionTest("OptSeq_Res8.txt", 8);
-
         // Test 2
         distanceEditionTest("OptSeq_Res10.txt", 10);
-
         // Test 3
         distanceEditionTest("OptSeq_Res13.txt", 13);
     }

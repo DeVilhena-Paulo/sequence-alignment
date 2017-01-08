@@ -21,7 +21,7 @@ public class Display {
         return result.toString();
     }
 
-    public static String computeAlignmentSeq (String s, String t) {
+    /*public static String computeAlignmentSeq (String s, String t) {
         int n = s.length();
         int m = t.length();
 
@@ -39,24 +39,24 @@ public class Display {
         }
 
         return optimalAlignment.toString();
-    }
+    }*/
 
     /**
-     * printAlignment (s, t): displays nicely one optimal alignment between sequences s and t
+     * printEditionDistance (s, t): displays nicely one optimal alignment between sequences s and t
      */
-    public static void printAlignment (String s, String t) {
+    public static void printEditionDistance (String s, String t) { // Task 3
         System.out.println (s);
         System.out.println (alignDisplay(s, t));
         System.out.println (t);
-        String aux = computeAlignmentSeq(s, t);
-        System.out.println ("Optimal alignment : " + aux + "; Size : " + aux.length());
+        String aux = Computation.sequenceAlignment(s, t);
+        int distEdit = s.length() - aux.length();
+        System.out.println ("Optimal alignment : " + aux + "; Distance edition : " + distEdit);
     }
 
-    public static void printScore (String s, String t) { // Task 4: Substitution matrix
+    public static void printBlosum50Score (String s, String t) { // Task 4: Substitution matrix
         System.out.println(s);
         System.out.println(t);
-        System.out.println("Score of alignment : " + Computation.blosum50Score(s, t) + "\n");
-        System.out.println("Score of alignment with affine penalty: " + Computation.blosum50Score(s, t, 10, 1) + "\n");
+        System.out.println("Score of alignment with Blosum50: " + Computation.blosum50Score(s, t) + "\n");
     }
 
     public static void printAffineScore (String s, String t, float openCost, float increaseCost) { // Task 5: Affine Penalty
