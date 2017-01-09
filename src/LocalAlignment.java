@@ -53,14 +53,14 @@ public class LocalAlignment {
 
                 float deletionScore = 0;
                 for (int k = 1; k < i; k++) {
-                    float gapPenalty = openCost + k*increaseCost;
+                    float gapPenalty = openCost + (k - 1)*increaseCost;
                     if (H[i - k][j] - gapPenalty >= deletionScore)
                         deletionScore = H[i - k][j] - gapPenalty;
                 }
 
                 float insertionScore = 0;
                 for (int k = 1; k < j; k++) {
-                    float gapPenalty = openCost + k*increaseCost;
+                    float gapPenalty = openCost + (k - 1)*increaseCost;
                     if (H[i][j - k] - gapPenalty >= insertionScore)
                         insertionScore = H[i][j - k] - gapPenalty;
                 }
@@ -114,7 +114,7 @@ public class LocalAlignment {
     }
 
     /**
-     * backtracking (s, t, path) : does the backtracking of the array path to reconstruct one optimal
+     * traceBack (s, t, matrices) : does the backtracking of the array path to reconstruct one optimal
      * local alignment between the sequences s and t.
      */
     private static Pair<List<String>, Float> traceBack (String s, String t, Pair<int[][], float[][]> matrices){

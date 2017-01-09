@@ -56,18 +56,18 @@ public class Display {
         System.out.println ("Optimal alignment : " + aux + "; Distance edition : " + distEdit + "\n");
     }
 
-    public static void printBlosum50Similarity (String s, String t) { // Task 4: Substitution matrix
+    public static void printBlosum50Similarity (String s, String t, float maxScore) { // Task 4: Substitution matrix
         System.out.println(s);
         System.out.println (alignDisplay(s, t));
         System.out.println(t);
-        System.out.println("Score of alignment with Blosum50: " + Computation.blosum50Score(s, t) + "\n");
+        System.out.println("Score of alignment with Blosum50: " + maxScore + "; " + "\n");
     }
 
     public static void printAffineScore (String s, String t, float maxScore) { // Task 5: Affine Penalty
         System.out.println(s);
         System.out.println (alignDisplay(s, t));
         System.out.println(t);
-        System.out.println("Score of alignment with affine penalty: " + maxScore + "\n");
+        System.out.println("Score of alignment with affine penalty: " + maxScore + "; " + "\n");
     }
 
     public static void printLocal (String s, String t, float maxValue) { // Task 6: Local Optimal
@@ -86,7 +86,6 @@ public class Display {
     }
 
     public static void printPerfectMatchIndices (Set<Integer> indices, String t, int k) {
-        System.out.println("Indices of perfect matches in t: ");
         for (Integer index : indices) {
             System.out.printf("%4d", index);
             System.out.println(" : " + t.substring(index, index + k));

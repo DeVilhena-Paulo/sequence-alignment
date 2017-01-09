@@ -20,12 +20,16 @@ public class Main {
 
     public static void  task5 (String aFileName) throws IOException {
         System.out.println("\nTask 5 : Maximizing score of semi global alignment (gaps at the beginning or at the end have no cost) with substitution matrix Blosum50 and addine gap penalty");
-        Alignment.affinePenalty(aFileName, 10, 1);
+        float openCost = 10;
+        float increaseCoest = 1;
+        Alignment.affinePenalty(aFileName, openCost, increaseCoest);
     }
 
     public static void  task6 (String aFileName) throws IOException {
         System.out.println("\nTask 6 : Optimal local alignment");
-        LocalAlignment.optimalLocal(aFileName, 10, 1);
+        float openCost = 10;
+        float increaseCoest = 1;
+        LocalAlignment.optimalLocal(aFileName, openCost, increaseCoest);
     }
 
     public static void  task7 (String aFileName) throws IOException {

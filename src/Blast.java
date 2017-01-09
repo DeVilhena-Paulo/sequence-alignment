@@ -254,8 +254,6 @@ public class Blast {
         String g = lines.get(0);
         String t = lines.get(1);
 
-        //int k = 4;
-
         float[][] scoreMatrix = wordsScoreMatrix (g, t, k);
         float[] threshold = alignScoreTh (g, k, th);
         Set<Pair<Integer, Integer>> set = highScores (scoreMatrix, threshold);

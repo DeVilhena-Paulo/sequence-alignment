@@ -62,7 +62,7 @@ public class Computation {
         for (int i = 1; i < n; i++) {
             if (s.charAt(i - 1) != '-' && s.charAt(i) == '-') {
                 sOpen = true;
-                sAux = openCost;
+                sAux = openCost - increaseCost;
             }
             else if (s.charAt(i - 1) == '-' && s.charAt(i) != '-') {
                 penalty += sAux;
@@ -72,7 +72,7 @@ public class Computation {
 
             if (t.charAt(i - 1) != '-' && t.charAt(i) == '-') {
                 tOpen = true;
-                tAux = openCost;
+                tAux = openCost - increaseCost;
             }
             else if (t.charAt(i - 1) == '-' && t.charAt(i) != '-') {
                 penalty += tAux;

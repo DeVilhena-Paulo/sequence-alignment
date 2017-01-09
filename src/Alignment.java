@@ -175,7 +175,7 @@ public class Alignment {
      * alignment between the first i characters of the string s to the first j characters of the string t, being
      * able to manage the memoization process.
      */
-    private static int[][] maxinizeBlosum50Score  (String s, String t) {
+    private static Pair<int[][], Float> maxinizeBlosum50Score  (String s, String t) {
         int n = s.length();
         int m = t.length();
         float[][] S = new float [n + 1][m + 1];
@@ -213,7 +213,7 @@ public class Alignment {
             }
         }
 
-        return path;
+        return new Pair <>(path, S[n][m]) ;
     }
 
 
@@ -231,7 +231,9 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
-        int[][] path = maxinizeBlosum50Score (s, t);
+        Pair<int[][], Float> pair = maxinizeBlosum50Score (s, t);
+        int[][] path = pair.first;
+        float maxScore = pair.second;
 
         List<String> editedSeqs = traceBack(s, t, path);
 
@@ -241,7 +243,7 @@ public class Alignment {
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
 
-        Display.printBlosum50Similarity(sEdition, tEdition);
+        Display.printBlosum50Similarity(sEdition, tEdition, maxScore);
     }
 
     /**
@@ -268,39 +270,39 @@ public class Alignment {
 
         D[0][0] = 0F;
 
-        for (int i = 1; i < n + 1; i++) {
+        for (int i = 0; i < n + 1; i++) {
             D[i][0] = 0F;
-            //Q[i][0] = - Float.MAX_VALUE;
+            Q[i][0] = Float.NEGATIVE_INFINITY;
         }
 
-        for (int j = 1; j < m + 1; j++) {
+        for (int j = 0; j < m + 1; j++) {
             D[0][j] = 0F;
-            //P[0][j] = - Float.MAX_VALUE;
+            P[0][j] = Float.NEGATIVE_INFINITY;
         }
 
 
-        for (int i = 1; i < n + 1; i ++)
+        for (int i = 1; i < n + 1; i ++) {
             for (int j = 1; j < m + 1; j++) {
                 // calculate P
-                float tOpenGapCost = D[i - 1][j] - (openCost + increaseCost);
+                float tOpenGapCost = D[i - 1][j] - openCost;
                 float tExtendGapCost = P[i - 1][j] - increaseCost;
 
                 P[i][j] = tOpenGapCost;
                 traceBackP[i][j] = 1; // first option taken
 
-                if (i > 1 && tExtendGapCost > P[i][j]) {
+                if (tExtendGapCost > P[i][j]) {
                     P[i][j] = tExtendGapCost;
                     traceBackP[i][j] = 2; // second option taken
                 }
 
                 // calculate Q
-                float sOpenGapCost = D[i][j - 1] - (openCost + increaseCost);
+                float sOpenGapCost = D[i][j - 1] - openCost;
                 float sExtendGapCost = Q[i][j - 1] - increaseCost;
 
                 Q[i][j] = sOpenGapCost;
                 traceBackQ[i][j] = 1;
 
-                if (j > 1 && sExtendGapCost > Q[i][j]) {
+                if (sExtendGapCost > Q[i][j]) {
                     P[i][j] = sExtendGapCost;
                     traceBackQ[i][j] = 2;
                 }
@@ -323,41 +325,48 @@ public class Alignment {
                     traceBackD[i][j] = 2;
                 }
             }
-
-
-        float maxScore;
-        int indMax;
-        Pair<Integer, Integer> pair;
-
-        if (n < m) {
-            maxScore = D[n][0];
-            indMax = 0;
-            for (int j = 1; j < m + 1; j++)
-                if (D[n][j] > maxScore) {
-                    maxScore = D[n][j];
-                    indMax = j;
-                }
-            pair = new Pair<>(n, indMax);
-        }
-        else {
-            maxScore = D[0][m];
-            indMax = 0;
-            for (int i = 1; i < n + 1; i++)
-                if (D[i][m] > maxScore) {
-                    maxScore = D[i][m] ;
-                    indMax = i;
-                }
-            pair = new Pair<>(indMax, m);
         }
 
-        //System.out.println("Max at " + indMax + ", value = " + maxScore);
+        Pair <Pair<Integer, Integer>, Float> pair = findBottomMax(D);
+        Pair<Integer, Integer> indices = pair.first;
+        int indI = indices.first;
+        int indJ = indices.second;
+        float max = pair.second;
 
         List<int[][]> result = new LinkedList<int[][]>();
         result.add(traceBackD);
         result.add(traceBackP);
         result.add(traceBackQ);
 
-        return new Triple<>(result, pair, maxScore);
+        return new Triple<>(result, indices, max);
+    }
+
+    private static Pair <Pair<Integer, Integer>, Float> findBottomMax (float[][] D) {
+        int n = D.length;
+        int m = D[0].length;
+
+        if(n < 1 || m < 1)
+            throw new java.lang.IllegalArgumentException();
+
+        int indI = n - 1;
+        int indJ = 0;
+        float max = D[indI][indJ];
+
+        for (int j = 0; j < m; j ++)
+            if (D[n - 1][j] > max) {
+                max = D[n - 1][j];
+                indI = n - 1;
+                indJ = j;
+            }
+
+        for (int i = 0; i < n; i ++)
+            if (D[i][m - 1] > max) {
+                max = D[i][m - 1];
+                indI = i;
+                indJ = m - 1;
+            }
+
+        return new Pair<>(new Pair<>(indI, indJ), max);
     }
 
     /**
