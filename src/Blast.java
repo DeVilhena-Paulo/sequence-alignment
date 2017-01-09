@@ -45,7 +45,7 @@ public class Blast {
      * all the indices that correspond to beginning of perfect matches between an element of Sg and
      * a subword of t.
      */
-    public static Set<Integer> perfectMatches (String aFileName, float th) throws IOException {
+    public static Set<Integer> perfectMatches (String aFileName, float th, int k) throws IOException {
         List<String> lines = readFiles(aFileName);
 
         if (lines.size() != 2)
@@ -54,14 +54,17 @@ public class Blast {
         String g = lines.get(0);
         String t = lines.get(1);
 
-        float[][] scoreMatrix = wordsScoreMatrix (g, t, 4);
-        float[] threshold = alignScoreTh (g, 4, th);
+        //int k = 4;
+
+        float[][] scoreMatrix = wordsScoreMatrix (g, t, k);
+        float[] threshold = alignScoreTh (g, k, th);
         Set<Pair<Integer, Integer>> set = highScores (scoreMatrix, threshold);
 
         Set<Integer> result = new HashSet<>();
         for (Pair<Integer, Integer> pair : set)
             result.add(pair.second);
 
+        Display.printPerfectMatchIndices (result, t, k);
         return result;
     }
 
@@ -242,7 +245,7 @@ public class Blast {
      * highScoreAlignments (aFileName, th, thl) : takes g, t, from a input file, th and th` as parameters
      * and returns all the local alignments with sufficiently high scores.
      */
-    public static Set<Triple<Integer, Integer, Float>> highScoreAlignments (String aFileName, float th, float thl) throws IOException {
+    public static Set<Triple<Integer, Integer, Float>> highScoreAlignments (String aFileName, float th, float thl, int k) throws IOException {
         List<String> lines = readFiles(aFileName);
 
         if (lines.size() != 2)
@@ -251,7 +254,7 @@ public class Blast {
         String g = lines.get(0);
         String t = lines.get(1);
 
-        int k = 4;
+        //int k = 4;
 
         float[][] scoreMatrix = wordsScoreMatrix (g, t, k);
         float[] threshold = alignScoreTh (g, k, th);
@@ -275,7 +278,7 @@ public class Blast {
                 int rightExtension = triple.second;
                 float score = triple.third;
                 result.add(new Triple(tIndex - leftExtension, k + leftExtension + rightExtension, score));
-                Display.printIntermediateBlastResults(gIndex, tIndex, leftExtension, rightExtension, score);
+                Display.printIntermediateBlastResults(g, t, gScoreTh, gIndex, tIndex, leftExtension, rightExtension, k, score);
             }
         }
 

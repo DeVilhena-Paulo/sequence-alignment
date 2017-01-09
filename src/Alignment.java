@@ -339,7 +339,7 @@ public class Alignment {
             pair = new Pair<>(indMax, m);
         }
 
-        System.out.println("Max at " + indMax + ", value = " + maxScore);
+        //System.out.println("Max at " + indMax + ", value = " + maxScore);
 
         List<int[][]> result = new LinkedList<int[][]>();
         result.add(traceBackD);

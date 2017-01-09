@@ -1,3 +1,4 @@
+import java.util.Set;
 
 public class Display {
 
@@ -52,7 +53,7 @@ public class Display {
         System.out.println (t);
         String aux = Computation.sequenceAlignment(s, t);
         int distEdit = s.length() - aux.length();
-        System.out.println ("Optimal alignment : " + aux + "; Distance edition : " + distEdit);
+        System.out.println ("Optimal alignment : " + aux + "; Distance edition : " + distEdit + "\n");
     }
 
     public static void printBlosum50Similarity (String s, String t) { // Task 4: Substitution matrix
@@ -76,7 +77,19 @@ public class Display {
         System.out.println("Score of alignment with affine penalty: " + maxValue + " ; size: " + s.length() + "\n");
     }
 
-    public static void printIntermediateBlastResults (int index1, int index2, int indI, int indJ, float score) {
-        System.out.println("indeces: (" + index1 + ", " + index2 + "); indI: " + indI + "; indJ: " + indJ + "; score: " + score );
+    public static void printIntermediateBlastResults (String g, String t, float gScoreTh, int index1, int index2, int indI, int indJ, int k, float score) {
+        System.out.println("--- *** ---");
+        System.out.println("Match between (subword of g : " + g.substring(index1, index1 + k) + ") and (subword of t : " + t.substring(index2, index2 + k) + ")");
+        System.out.println("Extended " + indI + " letters to the left and " + indJ + " to the right. Total length = " + (indI + k + indJ));
+        System.out.println("Local alignment = " + t.substring(index2 - indI, index2) + " " + t.substring(index2, index2 + k) + " " + t.substring(index2 + k, index2 + k + indJ));
+        System.out.println("Score of alignment = " + score + "; Threshold = " + gScoreTh);
+    }
+
+    public static void printPerfectMatchIndices (Set<Integer> indices, String t, int k) {
+        System.out.println("Indices of perfect matches in t: ");
+        for (Integer index : indices) {
+            System.out.printf("%4d", index);
+            System.out.println(" : " + t.substring(index, index + k));
+        }
     }
 }
