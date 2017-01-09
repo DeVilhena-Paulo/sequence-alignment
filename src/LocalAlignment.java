@@ -51,16 +51,16 @@ public class LocalAlignment {
                 float alignScore = H[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
 
                 float deletionScore = 0;
-                for (int k = 1; k <= i; k++) {
+                for (int k = 1; k < i; k++) {
                     float gapPenalty = openCost + k*increaseCost;
-                    if (H[i - k][j] - gapPenalty > deletionScore)
+                    if (H[i - k][j] - gapPenalty >= deletionScore)
                         deletionScore = H[i - k][j] - gapPenalty;
                 }
 
                 float insertionScore = 0;
-                for (int k = 1; k <= j; k++) {
+                for (int k = 1; k < j; k++) {
                     float gapPenalty = openCost + k*increaseCost;
-                    if (H[i][j - k] - gapPenalty > insertionScore)
+                    if (H[i][j - k] - gapPenalty >= insertionScore)
                         insertionScore = H[i][j - k] - gapPenalty;
                 }
 

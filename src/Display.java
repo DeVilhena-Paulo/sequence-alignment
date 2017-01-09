@@ -14,6 +14,8 @@ public class Display {
         for (int i = 0; i < n; i++) {
             if (s.charAt(i) == t.charAt(i))
                 result.append('|');
+            else if (Blosum50.getScore(s.charAt(i), t.charAt(i)) >= 0)
+                result.append(':');
             else
                 result.append(' ');
         }
@@ -53,14 +55,16 @@ public class Display {
         System.out.println ("Optimal alignment : " + aux + "; Distance edition : " + distEdit);
     }
 
-    public static void printBlosum50Score (String s, String t) { // Task 4: Substitution matrix
+    public static void printBlosum50Similarity (String s, String t) { // Task 4: Substitution matrix
         System.out.println(s);
+        System.out.println (alignDisplay(s, t));
         System.out.println(t);
         System.out.println("Score of alignment with Blosum50: " + Computation.blosum50Score(s, t) + "\n");
     }
 
     public static void printAffineScore (String s, String t, float openCost, float increaseCost) { // Task 5: Affine Penalty
         System.out.println(s);
+        System.out.println (alignDisplay(s, t));
         System.out.println(t);
         System.out.println("Score of alignment with affine penalty: " + Computation.blosum50Score(s, t, openCost, increaseCost) + "\n");
     }

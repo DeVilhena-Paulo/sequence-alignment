@@ -16,6 +16,16 @@ public class Alignment {
         return Files.readAllLines(p, ENCODING);
     }
 
+    private static class Pair <ItemA, ItemB> {
+        public ItemA first;
+        public ItemB second;
+        public Pair (ItemA first, ItemB second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
+
+
     /**
      * lcs (s, t): this method computes the longest common subsequence between two sequences of letters,
      * the first has length n and the second m, using dynamic programming. The array M stores at M[i][j]
@@ -149,7 +159,7 @@ public class Alignment {
 
 
     /**
-     * scoreBlosum50 (s, t) : this method computes the maximum score of the alignment between two sequences
+     * maxinizeBlosum50Score (s, t) : this method computes the maximum score of the alignment between two sequences
      * of letters, s and t, using dynamic programming. The array S stores at S[i][j] the maximum score of the
      * alignment between the first i characters of the string s to the first j characters of the string t, being
      * able to manage the memoization process.
@@ -199,10 +209,10 @@ public class Alignment {
     // Task 4
 
     /**
-     * scoreBlosum50 (aFileName) : this methods computes and displays one optimal alignment between two
+     * blosum50Similarity (aFileName) : this methods computes and displays one optimal alignment between two
      * sequences of amino acids given in a input file using the Blosum50 matrix.
      */
-    public static void maxinizeBlosum50Score (String aFileName) throws IOException {
+    public static void blosum50Similarity (String aFileName) throws IOException {
         List<String> lines = readFiles(aFileName);
 
         if (lines.size() != 2)
@@ -220,62 +230,227 @@ public class Alignment {
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
 
-        Display.printBlosum50Score(sEdition, tEdition);
+        Display.printBlosum50Similarity(sEdition, tEdition);
     }
 
-    private static int[][] maxinizeBlosum50Score  (String s, String t, float openCost, float increaseCost) {
+    /**
+     * maxinizeBlosum50Score (s, t, openCost, increaseCost) : this method computes the semi-global (no penalty
+     * for end gaps) alignment between two sequences of letters, s and t, using the Gotoh's Algorithm with the
+     * Blosum50 scoring matrix. The matrix D stores at D[i][j] scores the optimal semi-global alignment that
+     * ends with an alignment between the i_th character of s and the j_th character of t. The matrix P stores
+     * at P[i][j] scores the optimal semi-global alignment that ends with an alignment between the i_th character
+     * of s and a hyphen in t.The matrix Q stores at Q[i][j] scores the optimal semi-global alignment that ends
+     * with an alignment between a hyphen in s and the j_th character of t. The method returns traceBackD, traceBackP
+     * and traceBackQ which encode the choices taken so far.
+     */
+    public static Pair<List<int[][]>, Pair<Integer, Integer>> maxinizeBlosum50Score  (String s, String t, float openCost, float increaseCost) {
         int n = s.length();
         int m = t.length();
-        float[][] S = new float [n + 1][m + 1];
-        int[][] path = new int [n + 1][m + 1];
 
-        S[0][0] = 0F;
+        float[][] D = new float [n + 1][m + 1];
+        float[][] P = new float [n + 1][m + 1];
+        float[][] Q = new float [n + 1][m + 1];
 
-        for (int i = 1; i < n + 1; i++)
-            //S[i][0] = 0;
-            S[i][0] = S[i-1][0] + Blosum50.getScore(s.charAt(i - 1), '-'); // deletion of i_th character from s
+        int[][] traceBackD = new int [n + 1][m + 1];
+        int[][] traceBackP = new int [n + 1][m + 1];
+        int[][] traceBackQ = new int [n + 1][m + 1];
 
-        for (int j = 1; j < m + 1; j++)
-            //S[0][j] = 0;
-            S[0][j] = S[0][j-1] + Blosum50.getScore(t.charAt(j - 1), '-'); // insertion of j_th character from t in s
+        D[0][0] = 0F;
 
         for (int i = 1; i < n + 1; i++) {
+            D[i][0] = 0F;
+            //Q[i][0] = - Float.MAX_VALUE;
+        }
+
+        for (int j = 1; j < m + 1; j++) {
+            D[0][j] = 0F;
+            //P[0][j] = - Float.MAX_VALUE;
+        }
+
+
+        for (int i = 1; i < n + 1; i ++)
             for (int j = 1; j < m + 1; j++) {
+                // calculate P
+                float tOpenGapCost = D[i - 1][j] - (openCost + increaseCost);
+                float tExtendGapCost = P[i - 1][j] - increaseCost;
 
-                float alignScore = S[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
+                P[i][j] = tOpenGapCost;
+                traceBackP[i][j] = 1; // first option taken
 
-                float deletionScore = S[i - 1][j] +  Blosum50.getScore(s.charAt(i - 1), '-');
-                //float deletionScore = S[i - 1][j];
-                if (j != m) { // if I'm opening a gap in the end of the sequence t, the penalty does not count
-                    deletionScore -= increaseCost;
-                    if (i == 1 || path[i - 1][j] != 1)
-                        deletionScore -= openCost;
+                if (i > 1 && tExtendGapCost > P[i][j]) {
+                    P[i][j] = tExtendGapCost;
+                    traceBackP[i][j] = 2; // second option taken
                 }
 
-                float insertionScore = S[i][j - 1] +  Blosum50.getScore(t.charAt(j - 1), '-');
-                //float insertionScore = S[i][j - 1];
-                if (i != n) { // if I'm opening a gap in the end of the sequence s, the penalty does not count
-                    insertionScore -= increaseCost;
-                    if (j == 1 || path[i][j - 1] != 2)
-                        insertionScore -= openCost;
+                // calculate Q
+                float sOpenGapCost = D[i][j - 1] - (openCost + increaseCost);
+                float sExtendGapCost = Q[i][j - 1] - increaseCost;
+
+                Q[i][j] = sOpenGapCost;
+                traceBackQ[i][j] = 1;
+
+                if (j > 1 && sExtendGapCost > Q[i][j]) {
+                    P[i][j] = sExtendGapCost;
+                    traceBackQ[i][j] = 2;
                 }
 
-                S[i][j] = alignScore;
-                path[i][j] = 0;
+                // calculate D
+                float continueAlignCost = D[i - 1][j - 1] + Blosum50.getScore(s.charAt(i - 1), t.charAt(j - 1));
+                float tTrailGapCost = P[i][j];
+                float sTrailGapCost = Q[i][j];
 
-                if (deletionScore > S[i][j]) {
-                    S[i][j] = deletionScore;
-                    path[i][j] = 1;
+                D[i][j] = continueAlignCost;
+                traceBackD[i][j] = 0;
+
+                if (tTrailGapCost > D[i][j]) {
+                    D[i][j] = tTrailGapCost;
+                    traceBackD[i][j] = 1;
                 }
 
-                if (insertionScore > S[i][j]) {
-                    S[i][j] = insertionScore;
-                    path[i][j] = 2;
+                if (sTrailGapCost > D[i][j]) {
+                    D[i][j] = sTrailGapCost;
+                    traceBackD[i][j] = 2;
                 }
             }
+
+
+        float maxScore;
+        int indMax;
+        Pair<Integer, Integer> pair;
+
+        if (n < m) {
+            maxScore = D[n][0];
+            indMax = 0;
+            for (int j = 1; j < m + 1; j++)
+                if (D[n][j] > maxScore) {
+                    maxScore = D[n][j];
+                    indMax = j;
+                }
+            pair = new Pair<>(n, indMax);
         }
-        //System.out.println("Affine penalty = " + S[n][m]);
-        return path;
+        else {
+            maxScore = D[0][m];
+            indMax = 0;
+            for (int i = 1; i < n + 1; i++)
+                if (D[i][m] > maxScore) {
+                    maxScore = D[i][m] ;
+                    indMax = i;
+                }
+            pair = new Pair<>(indMax, m);
+        }
+
+        System.out.println("Max at " + indMax + ", value = " + maxScore);
+
+        List<int[][]> result = new LinkedList<int[][]>();
+        result.add(traceBackD);
+        result.add(traceBackP);
+        result.add(traceBackQ);
+
+        return new Pair<>(result, pair);
+    }
+
+    /**
+     * gotohTraceBack : does the traceBack of the matrices trD, trP and trQ to reconstruct one optimal
+     * semi-global alignment between the sequences s and t
+     */
+    private static List<String> gotohTraceBack (String s, String t, int indI, int indJ, List<int[][]> traceBackMatrices) {
+        if (traceBackMatrices.size() != 3)
+            throw new java.lang.IllegalArgumentException();
+
+        int[][] trD = traceBackMatrices.get(0);
+        int[][] trP = traceBackMatrices.get(1);
+        int[][] trQ = traceBackMatrices.get(2);
+
+        int n = s.length();
+        int m = t.length();
+
+        StringBuilder sEdition = new StringBuilder();
+        StringBuilder tEdition = new StringBuilder();
+
+        int i = n, j = m;
+
+        if (indI == n)
+            while (j > indJ) {
+                tEdition.append(t.charAt(j - 1));
+                sEdition.append('-');
+                j--;
+            }
+
+        else
+            while (i > indI) {
+                sEdition.append(s.charAt(i - 1));
+                tEdition.append('-');
+                i--;
+            }
+
+        char state = 'D'; // we start at matrix D
+
+        while (i > 0 && j > 0) {
+            switch (state) {
+                case 'D':
+                    if (trD[i][j] == 0) {
+                        sEdition.append(s.charAt(i - 1));
+                        tEdition.append(t.charAt(j - 1));
+                        i--;
+                        j--;
+                    }
+                    else if (trD[i][j] == 1) // Deleting was chosen
+                        state = 'P';
+                    else // Inserting was chosen
+                        state = 'Q';
+
+                    break;
+
+                case 'P':
+                    if (trP[i][j] == 1) {
+                        sEdition.append(s.charAt(i - 1));
+                        tEdition.append('-');
+                        i--;
+                        state = 'D';
+                    }
+                    else { // Inserting was chosen
+                        sEdition.append(s.charAt(i - 1));
+                        tEdition.append('-');
+                        i--;
+                    }
+                    break;
+
+                case 'Q':
+                    if (trQ[i][j] == 1) { // Deleting was chosen
+                        state = 'D';
+                        tEdition.append(t.charAt(j - 1));
+                        sEdition.append('-');
+                        j--;
+                    }
+                    else { // Inserting was chosen
+                        tEdition.append(t.charAt(j - 1));
+                        sEdition.append('-');
+                        j--;
+                    }
+                    break;
+
+            }
+        }
+
+        if (i == 0)
+            while (j > 0) {
+                tEdition.append(t.charAt(j-1));
+                sEdition.append('-');
+                j--;
+            }
+
+        else
+            while (i > 0) {
+                sEdition.append(s.charAt(i-1));
+                tEdition.append('-');
+                i--;
+            }
+
+        List<String> editedSeqs = new LinkedList<>();
+        editedSeqs.add(sEdition.reverse().toString());
+        editedSeqs.add(tEdition.reverse().toString());
+
+        return editedSeqs;
     }
 
     // Task 5
@@ -293,9 +468,12 @@ public class Alignment {
 
         String s = lines.get(0);
         String t = lines.get(1);
-        int[][] path = maxinizeBlosum50Score (s, t, openCost, increaseCost);
 
-        List<String> editedSeqs = traceBack(s, t, path);
+        Pair<List<int[][]>, Pair<Integer, Integer>> result = maxinizeBlosum50Score (s, t, openCost, increaseCost);
+        List<int[][]> traceBackMatrices = result.first;
+        Pair<Integer, Integer> indices = result.second;
+
+        List<String> editedSeqs = gotohTraceBack(s, t, indices.first, indices.second, traceBackMatrices);
 
         if (editedSeqs.size() != 2)
             throw new java.lang.IllegalArgumentException();
