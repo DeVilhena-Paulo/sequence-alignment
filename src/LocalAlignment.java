@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LocalAlignment {
@@ -116,7 +117,7 @@ public class LocalAlignment {
      * backtracking (s, t, path) : does the backtracking of the array path to reconstruct one optimal
      * local alignment between the sequences s and t.
      */
-    private static Pair<String, String> traceBack (String s, String t, Pair<int[][], float[][]> matrices){
+    private static Pair<List<String>, Float> traceBack (String s, String t, Pair<int[][], float[][]> matrices){
         int[][] path = matrices.first;
         float[][] H = matrices.second;
 
@@ -124,7 +125,7 @@ public class LocalAlignment {
         int i = indeces.first;
         int j = indeces.second;
 
-        System.out.println("Max value = " + H[i][j]);
+        float maxValue = H[i][j];
 
         StringBuilder sLocal = new StringBuilder();
         StringBuilder tLocal = new StringBuilder();
@@ -149,7 +150,11 @@ public class LocalAlignment {
             }
         }
 
-        return new Pair (sLocal.reverse().toString(), tLocal.reverse().toString());
+        List<String> result = new LinkedList<>();
+        result.add(sLocal.reverse().toString());
+        result.add(tLocal.reverse().toString());
+
+        return new Pair (result, maxValue);
     }
 
 
@@ -170,11 +175,13 @@ public class LocalAlignment {
         String t = lines.get(1);
         Pair<int[][], float[][]> matrices = optimalLocal(s, t, openCost, increaseCost);
 
-        Pair<String, String> localSeqs = traceBack(s, t, matrices);
+        Pair<List<String>, Float> pair = traceBack(s, t, matrices);
 
-        String sLocal = localSeqs.first;
-        String tLocal = localSeqs.second;
+        List<String> localSeqs = pair.first;
+        String sLocal = localSeqs.get(0);
+        String tLocal = localSeqs.get(1);
+        float maxValue = pair.second;
 
-        Display.printLocal(sLocal, tLocal, openCost, increaseCost);
+        Display.printLocal(sLocal, tLocal, maxValue);
     }
 }

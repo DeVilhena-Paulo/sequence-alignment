@@ -69,11 +69,11 @@ public class Display {
         System.out.println("Score of alignment with affine penalty: " + Computation.blosum50Score(s, t, openCost, increaseCost) + "\n");
     }
 
-    public static void printLocal (String s, String t, float openCost, float increaseCost) { // Task 6: Local Optimal
+    public static void printLocal (String s, String t, float maxValue) { // Task 6: Local Optimal
         System.out.println (s);
         System.out.println (alignDisplay(s, t));
         System.out.println (t);
-        System.out.println("Score of alignment with affine penalty: " + Computation.blosum50Score(s, t, openCost, increaseCost) + " ; size: " + s.length() + "\n");
+        System.out.println("Score of alignment with affine penalty: " + maxValue + " ; size: " + s.length() + "\n");
     }
 
     public static void printIntermediateBlastResults (int index1, int index2, int indI, int indJ, float score) {
