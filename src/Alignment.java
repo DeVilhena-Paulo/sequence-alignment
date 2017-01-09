@@ -25,6 +25,17 @@ public class Alignment {
         }
     }
 
+    private static class Triple <ItemA, ItemB, ItemC> {
+        public ItemA first;
+        public ItemB second;
+        public ItemC third;
+        public Triple (ItemA first, ItemB second, ItemC third) {
+            this.first = first;
+            this.second = second;
+            this.third = third;
+        }
+    }
+
 
     /**
      * lcs (s, t): this method computes the longest common subsequence between two sequences of letters,
@@ -243,7 +254,7 @@ public class Alignment {
      * with an alignment between a hyphen in s and the j_th character of t. The method returns traceBackD, traceBackP
      * and traceBackQ which encode the choices taken so far.
      */
-    public static Pair<List<int[][]>, Pair<Integer, Integer>> maxinizeBlosum50Score  (String s, String t, float openCost, float increaseCost) {
+    public static Triple<List<int[][]>, Pair<Integer, Integer>, Float> maxinizeBlosum50Score  (String s, String t, float openCost, float increaseCost) {
         int n = s.length();
         int m = t.length();
 
@@ -346,7 +357,7 @@ public class Alignment {
         result.add(traceBackP);
         result.add(traceBackQ);
 
-        return new Pair<>(result, pair);
+        return new Triple<>(result, pair, maxScore);
     }
 
     /**
@@ -394,9 +405,9 @@ public class Alignment {
                         i--;
                         j--;
                     }
-                    else if (trD[i][j] == 1) // Deleting was chosen
+                    else if (trD[i][j] == 1)
                         state = 'P';
-                    else // Inserting was chosen
+                    else
                         state = 'Q';
 
                     break;
@@ -408,7 +419,7 @@ public class Alignment {
                         i--;
                         state = 'D';
                     }
-                    else { // Inserting was chosen
+                    else {
                         sEdition.append(s.charAt(i - 1));
                         tEdition.append('-');
                         i--;
@@ -416,13 +427,13 @@ public class Alignment {
                     break;
 
                 case 'Q':
-                    if (trQ[i][j] == 1) { // Deleting was chosen
+                    if (trQ[i][j] == 1) {
                         state = 'D';
                         tEdition.append(t.charAt(j - 1));
                         sEdition.append('-');
                         j--;
                     }
-                    else { // Inserting was chosen
+                    else {
                         tEdition.append(t.charAt(j - 1));
                         sEdition.append('-');
                         j--;
@@ -469,9 +480,10 @@ public class Alignment {
         String s = lines.get(0);
         String t = lines.get(1);
 
-        Pair<List<int[][]>, Pair<Integer, Integer>> result = maxinizeBlosum50Score (s, t, openCost, increaseCost);
+        Triple<List<int[][]>, Pair<Integer, Integer>, Float> result = maxinizeBlosum50Score (s, t, openCost, increaseCost);
         List<int[][]> traceBackMatrices = result.first;
         Pair<Integer, Integer> indices = result.second;
+        float maxScore = result.third;
 
         List<String> editedSeqs = gotohTraceBack(s, t, indices.first, indices.second, traceBackMatrices);
 
@@ -481,7 +493,7 @@ public class Alignment {
         String sEdition = editedSeqs.get(0);
         String tEdition = editedSeqs.get(1);
 
-        Display.printAffineScore(sEdition, tEdition, openCost, increaseCost);
+        Display.printAffineScore(sEdition, tEdition, maxScore);
     }
 
 }
